@@ -1,0 +1,83 @@
+[
+	{
+		"name": "POLICIA FEDERAL",
+		"internal_id": "PF",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "COMISION NACIONAL DE BUSQUEDA",
+		"internal_id": "CNS",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "PROCURADURIA GENERAL DE LA REPUBLICA",
+		"internal_id": "PGR",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "FISCALIA GENERAL DEL ESTADO DE VERACRUZ",
+		"internal_id": "FGE-VER",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "ADN MEXICO",
+		"internal_id": "ADNMX",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "SAN LUIS POTOSI",
+		"internal_id": "SLP",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "FISCALIA DE PERSONAS DESAPARECIDAS DE COAHUILA",
+		"internal_id": "FPD-COAH",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "EXTERNA",
+		"internal_id": "XTR",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	},
+	{
+		"name": "INTERPOL",
+		"internal_id": "INTRPOL",
+		"external_id": null,
+		"contact": null,
+		"email": null,
+		"phone_number_one": null,
+		"phone_number_two": null
+	}
+]

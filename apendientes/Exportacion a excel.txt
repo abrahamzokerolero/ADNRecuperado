@@ -1,0 +1,27 @@
+use App\User;
+use Maatwebsite\Excel;
+
+class ..... {
+
+    public function exportar(){
+        $data = User::all();
+        \Excel::create('usuarios', function ($excel) use ($data) {
+            /** Creamos una hoja */
+            $excel->sheet('Frecuencias alelicas', function ($sheet) use ($data) {
+                /**
+                 * Insertamos los datos en la hoja con el método with/fromArray
+                 * Parametros: (
+                 * Datos,
+                 * Valores del encabezado de la columna,
+                 * Celda de Inicio,
+                 * Comparación estricta de los valores del encabezado
+                 * Impresión de los encabezados
+                 * )*/
+                $sheet->with($data, null, 'A1', false, false);
+            });
+            /** Descargamos nuestro archivo pasandole la extensión deseada (xls, xlsx) */
+        })->download('xlsx');    
+    }
+
+}
+

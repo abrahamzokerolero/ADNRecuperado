@@ -1,0 +1,278 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+/*form label{margin-top: 10px;}*/
+
+table{
+	font-size: 0.9rem;
+}
+
+.dataTables_wrapper label{
+	font-weight: bold;
+}
+
+#myTable_wrapper{
+	padding: 1rem;
+}
+
+#collapseCategoria{
+	width: 45%;
+}
+
+.navbar-laravel{
+	opacity: 0.955;
+}
+
+.accesos_rapidos:hover{
+	-webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
+	-ms-transition: all 1s ease;
+	-o-transition: all 1s ease;
+	transition: all 1s ease;
+
+	background: #ddd ;
+	color: black;
+
+	-moz-transform: scale(1.05);
+	-webkit-transform: scale(1.05);
+	-o-transform: scale(1.05);
+	-ms-transform: scale(1.05);
+	transform: scale(1.05);
+
+	opacity: 0.7;
+}
+
+.accesos_rapidos{
+	background: #DDD;
+	border-radius: 20px;
+}
+
+.accesos_rapidos{
+	width: 23%;
+}
+
+.accesos_rapidos .card-footer a{
+	text-decoration: none;
+	color: white;
+}
+
+.acceso_rapido_contenido{
+	padding-top: 60px;
+}
+
+.accesos_rapidos .genotipos_gris{
+	background-image: url("../images/genotipos_gris.png");
+    background-color: #088A08;
+    background-size: 50% 80%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+.accesos_rapidos .verde{
+	background-color: #0B610B;
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+}
+
+.accesos_rapidos .busquedas_gris{
+	background-image: url("../images/busquedas_gris.png");
+    background-color: #EEE;
+    background-size: 50% 80%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .fuentes_gris{
+	background-image: url("../images/fuentes_gris.png");
+    background-color: #FE2E2E;
+    background-size: 60% 80%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .rojo{
+	background-color: #B40404;
+	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 20px;
+}
+
+.accesos_rapidos .usuarios_gris{
+	background-image: url("../images/usuarios_gris.png");
+    background-color: #088A08;
+    background-size: 40% 80%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .importaciones_gris{
+	background-image: url("../images/importaciones_gris.png");
+    background-color: #EEE;
+    background-size: 30% 60%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .exportaciones_gris{
+	background-image: url("../images/exportaciones_gris.png");
+    background-color: #FE2E2E;
+    background-size: 30% 60%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .grupos_gris{
+	background-image: url("../images/usuarios.png");
+    background-color: #088A08;
+    background-size: 50% 70%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+.accesos_rapidos .etiquetas_gris{
+	background-image: url("../images/etiquetas_gris.png");
+    background-color: #EEE;
+    background-size: 50% 70%;
+    background-repeat: no-repeat;
+    background-position-y: 35px;
+    background-position-x: 20px;
+	border-top-right-radius: 20px;
+	border-top-left-radius: 20px;
+	margin-bottom: 0;
+}
+
+body{
+	background-color: #FFF;
+}
+
+.form-auth{
+	margin-top: 7rem;
+}
+
+.side-menu li a, #menu-lateral button{
+	color: white;
+	font-size: 0.8rem;
+	
+}
+
+.side-menu #menu-lateral ul> li a{
+	background: -moz-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(54,54,54,1)), color-stop(98%, rgba(176,169,176,1)), color-stop(100%, rgba(176,169,176,1)));
+	background: -webkit-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -o-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -ms-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: linear-gradient(to right, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#363636', endColorstr='#b0a9b0', GradientType=1 );
+	color: white;
+}
+
+.side-menu div>.card-header{
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.side-menu li a:hover{
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	background: #ddd ;
+	color: black;
+}
+
+.texto-logo{
+	font-size: 0.6rem;
+}
+
+#menu-lateral .card{
+	background-color: #777;
+	margin: 0.1px;
+	border: 1px solid white;
+}
+
+#menu-lateral{
+	padding-top:50px;
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: 0;
+	margin-right: 0;
+	margin-top: 105px;
+	width: 16%;
+	border-radius: 0px;
+	background: rgba(54,54,54,1);
+	background: -moz-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(54,54,54,1)), color-stop(98%, rgba(176,169,176,1)), color-stop(100%, rgba(176,169,176,1)));
+	background: -webkit-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -o-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: -ms-linear-gradient(left, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	background: linear-gradient(to right, rgba(54,54,54,1) 0%, rgba(176,169,176,1) 98%, rgba(176,169,176,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#363636', endColorstr='#b0a9b0', GradientType=1 );
+}
+
+#contenido-pagina{
+	margin-top: 105px;
+	max-width: 100%;
+	width: 83%;
+}
+
+#myTab li a{
+	color: #000;
+}
+
+#myTab li{
+	background-color: #AAA;
+}
+
+.metadatos{
+	width: 70%;
+}
+
+.metadato_datos{
+	width: 48%;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.instrucciones_captura_manual{
+	width: 70%;
+}
+
+.busqueda_fondo{
+background: rgba(255,255,255,1);
+background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(237,237,237,1)));
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed', GradientType=0 );
+}

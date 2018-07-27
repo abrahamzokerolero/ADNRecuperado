@@ -1,0 +1,132 @@
+[
+	{
+		"name": "GRUPOS GENERALES",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR ESTADO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR ESTADO-ANO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR ESTADO-FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "ESTADOS",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "SEXO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "SIN ASIGNAR",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "DESAPARECIDOS POR ESTADO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "DESAPARECIDOS POR ESTADO/FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "DESAPARECIDOS POR FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "DESAPARECIDOS POR ANO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "DESAPARECIDOS POR ANO-FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "OTROS",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR ANO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR ANO-FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR ANO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "FAMILIARES POR ANO-FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR ESTADO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR ESTADO-FUENTE",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "INDICIOS POR ESTADO-ANO",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "PEDIDOS ADMX",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "IDENTIFICADOS",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	},
+	{
+		"name": "PARTICULARES",
+		"created_at": "2018-06-12 19:15:05",
+		"updated_at": "2018-06-12 19:15:05"
+	}
+]
