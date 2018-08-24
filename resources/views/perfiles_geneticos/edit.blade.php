@@ -7,8 +7,7 @@
 @section('script')
     <!-- Scripts -->
     <link rel="stylesheet" href="{{asset('css/choices.min.css?version=3.0.4')}}">
-  	<script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script>
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+  	<script src="{{asset('js/jquery-3.3.1.js')}}"></script>	
 @endsection
 
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
@@ -122,11 +121,13 @@
 						<div class="card-body text-justify">
 							<ul class="nav nav-tabs" id="myTab" role="tablist">
 							  <li class="nav-item">
-							    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a>
+							    {{-- <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a> --}}
+								<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">METADATOS</a>
+
 							  </li>
-							  <li class="nav-item">
+							  {{-- <li class="nav-item">
 							    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">DATOS DE FAMILIARES</a>
-							  </li>
+							  </li> --}}
 							</ul>
 							<div class="tab-content" id="myTabContent">
 							  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -151,9 +152,38 @@
 								      {{Form::text('fosa', $fosa , ['class' => 'form-control'])}}
 								    </div>
 								  </div>
+								  
+								  {{-- BORRAR DESDE AQUI SI QUIERE CAMBIARLO --}}
+
+								  <div class="row pl-3 pr-3 pt-3">
+								   <div class="col">
+								      {{Form::label('nombre_del_donante', 'Nombre del donante')}}
+								      {{Form::text('nombre_del_donante', $nombre_del_donante , ['class' => 'form-control'])}}
+								   </div>
+								   <div class="col">
+								      {{Form::label('curp_del_familiar', 'CURP del familiar')}}
+								      {{Form::text('curp_del_familiar', $curp_del_familiar , ['class' => 'form-control curp'])}}
+								    </div>
+								   </div>
+								   <div class="row pl-3 pr-3 pt-3">
+								   		<div class="col">
+									      {{Form::label('nombre_del_desaparecido', 'Nombre del desaparecido')}}
+									      {{Form::text('nombre_del_desaparecido', $nombre_del_desaparecido , ['class' => 'form-control'])}}
+									    </div>
+									    <div class="col">
+									      {{Form::label('curp_del_desaparecido', 'CURP del desaparecido')}}
+									      {{Form::text('curp_del_desaparecido', $curp_del_desaparecido , ['class' => 'form-control curp'])}}
+									    </div>
+									</div>
+									<div class="row pl-3 pr-3 pt-3">
+									    <div class="col">
+									      {{Form::label('parentesco_con_el_desaparecido', 'Parentesco con el desaparecido')}}
+									      {{Form::text('parentesco_con_el_desaparecido', $parentesco_con_el_desaparecido , ['class' => 'form-control'])}}
+									    </div>
+									</div>
 								  <hr>
 							  </div>
-							  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+							  {{-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 							  	<div class="card-header text-center text-white bg-danger mt-3">Datos de Familiares</div>
 								  <div class="row pl-3 pr-3 pt-3">
 								   <div class="col">
@@ -182,7 +212,7 @@
 									    </div>
 									</div>
 								 	<hr>
-							  </div>
+							  </div> --}}
 							  <div class="row pl-3 pr-3 pt-3">
 							    <div class="col">
 							      {{Form::label('clave_de_muestra', 'Clave de muestra')}}
@@ -264,21 +294,25 @@
 									<div class="col">
 										<label for="etiquetas">Seleccionar etiquetas para los perfiles</label>
 										<select class="form-control etiquetas_ajax" name="etiquetas[]" id="etiquetas" placeholder="Seleccione las etiquetas" multiple>
-										<?php $etiqueta_asignada?>	
-										@foreach($categorias as $categoria)
-											<optgroup label="{{ strtoupper($categoria->nombre)}}">
-												@foreach($categoria->etiquetas as $etiqueta)
-													<?php 
-													$etiqueta_asignada = App\EtiquetaAsignada::where('id_perfil_genetico', '=', $perfil_genetico->id)->where('id_etiqueta', '=', $etiqueta->id)->first(); 
-													?>
+											<?php $etiqueta_asignada?>
+											@foreach($categorias as $categoria)
+												<optgroup label="{{ strtoupper($categoria->nombre)}}">
+													@foreach($categoria->etiquetas as $etiqueta)												
+														<?php 
+														$etiqueta_asignada = App\EtiquetaAsignada::where('id_perfil_genetico', '=', $perfil_genetico->id)->where('id_etiqueta', '=', $etiqueta->id)->first(); 
+														?>
 														@if(empty($etiqueta_asignada))
-															<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}}</option>
+															<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+																{{$etiqueta->perfiles_geneticos_asociados->count()}}
+															)</b></option>
 														@else
-															<option selected value="{{$etiqueta->id}}">{{$etiqueta->nombre}}</option>
+															<option selected value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+																{{$etiqueta->perfiles_geneticos_asociados->count()}}
+															)</b></option>
 														@endif
-												@endforeach	
-											</optgroup>
-										@endforeach
+													@endforeach	
+												</optgroup>
+											@endforeach	
 										</select>
 									</div>
   								</div>
@@ -380,6 +414,8 @@
 
 	    $(".GuardarEtiquetas").click(function(e){
 	        e.preventDefault();
+	        var etiquetas_seleccionadas = $('#etiquetas').val();
+	     
 	        $('.GuardarEtiquetas').text("Espere un momento");
             $('.GuardarEtiquetas').addClass('disabled');
             $('#carga').fadeIn();
@@ -390,7 +426,7 @@
 	        if(categoria != null && etiquetas != "" ){
 	            $('.mensaje_de_error2').fadeOut();
 	            $.post(url, form.serialize(), function(result){
-	            	console.log(result.categorias);
+	            	// console.log(result.categorias);
 	                multipleDefault.destroy();
 	                for(i in result.categorias){
 	                	//result.categorias[i].nombre       Nombre de las categorias
@@ -402,24 +438,15 @@
 	                	}
 	                }
 
-	                multipleDefault = new Choices(document.getElementById('etiquetas'));
+	                multipleDefault = new Choices(document.getElementById('etiquetas'), {
+					    searchResultLimit: 100,
+					    resetScrollPosition: false,
+				    });
 
-	                multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-					placeholder: true,
-					placeholderValue: 'Pick an Strokes record',
-					maxItemCount: 5,
-					}).ajax(function(callback) {
-					fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-					  .then(function(response) {
-					    response.json().then(function(data) {
-					      callback(data.releases, 'title', 'title');
-					    });
-					  })
-					  .catch(function(error) {
-					    console.error(error);
-					  });
-					});
-	                
+	                for( etiqueta_individual in etiquetas_seleccionadas){
+		            	multipleDefault.setValueByChoice(etiquetas_seleccionadas[etiqueta_individual]);
+		            }
+
 	                $('.mensaje_de_error2').text("Etiqueta(s) agregada(s) exitosamente");
 	                $('.mensaje_de_error2').removeClass('bg-warning');
 	                $('.mensaje_de_error2').addClass('bg-success text-white');
@@ -455,30 +482,16 @@
 	                $('.GuardarEtiquetas').text("Guardar");
 		            $('.GuardarEtiquetas').removeClass('disabled');
 		            $('#carga').fadeOut();
-	
-	        	}
-	        	
+	        	}	        
 	        }
 	    });
 
-	    var multipleDefault = new Choices(document.getElementById('etiquetas'));
-
-		var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-		placeholder: true,
-		placeholderValue: 'Pick an Strokes record',
-		maxItemCount: 5,
-		}).ajax(function(callback) {
-		fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-		  .then(function(response) {
-		    response.json().then(function(data) {
-		      callback(data.releases, 'title', 'title');
-		    });
-		  })
-		  .catch(function(error) {
-		    console.error(error);
-		  });
-		});
+	    var multipleDefault = new Choices(document.getElementById('etiquetas'), {
+		    searchResultLimit: 100,
+		    resetScrollPosition: false,
+	    });
 
     });
   </script>
+  <script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script>
 @endsection

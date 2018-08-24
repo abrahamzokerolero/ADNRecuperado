@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Laracast\Flash\Flash;
 use App\Fuente;
+use App\Log;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class FuentesController extends Controller
 {
@@ -54,7 +57,7 @@ class FuentesController extends Controller
             'id_interno.unique' => 'El id interno de fuente ya existe'
         ]);
 
-        $categoria = Fuente::create([
+        $fuente = Fuente::create([
             'nombre' => $request->input('nombre'),
             'id_interno' => $request->input('id_interno'),
             'id_externo' => $request->input('id_externo'),
@@ -64,6 +67,13 @@ class FuentesController extends Controller
             'telefono2_fuente' => $request->input('telefono2_fuente'),
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Creo la fuente: ' . $fuente->nombre,
         ]);
 
         flash('La fuente se ingreso correctamente', 'success');
@@ -117,6 +127,8 @@ class FuentesController extends Controller
             'id_interno.required' => 'El campo id interno debe ser llenado',
         ]);
         
+        $usuario = User::find(Auth::id());
+
         $fuente = Fuente::find($id);
         $fuente->nombre = $request->nombre;
         $fuente->id_interno = $request->id_interno;
@@ -127,6 +139,12 @@ class FuentesController extends Controller
         $fuente->telefono2_fuente = $request->telefono2_fuente;
         $fuente->updated_at = date("Y-m-d H:i:s");
         $fuente->save();
+
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Actualizo la fuente: ' . $fuente->nombre,
+        ]);
 
         Flash('La fuente fue actualizada', 'success');
 
@@ -144,6 +162,14 @@ class FuentesController extends Controller
         $fuente = Fuente::find($id);
         $fuente->desestimado = 1;
         $fuente->save();
+
+        $usuario = User::find(Auth::id());
+
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Elimino la fuente la fuente: ' . $fuente->nombre,
+        ]);
 
         Flash('La fuente ' .$fuente->nombre . ' fue eliminada exitosamente', 'success');
 

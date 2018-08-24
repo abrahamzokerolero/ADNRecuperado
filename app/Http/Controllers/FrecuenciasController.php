@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Frecuencia;
 use Carbon\Carbon;
+use App\Log;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class FrecuenciasController extends Controller
 {
@@ -49,6 +52,14 @@ class FrecuenciasController extends Controller
         $frecuencia->frecuencia = $request->frecuencia;
         $frecuencia->updated_at = date("Y-m-d H:i:s");
         $frecuencia->save();
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Actualizo el marcador: ' . $frecuencia->marcador->nombre . ' con el alelo: ' . $frecuencia->alelo . ' de la tabla de frecuencias: ' . $frecuencia->importacion_frecuencia->nombre_otorgado,
+        ]);
+
         flash('El marcador fue actualizado correctamente', 'success');
         return redirect()->route('importaciones_frecuencias.show', $frecuencia->importacion_frecuencia->id);
     }
@@ -64,6 +75,14 @@ class FrecuenciasController extends Controller
         $frecuencia = Frecuencia::find($id);
         $frecuencia->desestimado = 1;
         $frecuencia->save();
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Elimino el marcador: ' . $frecuencia->marcador->nombre . ' con el alelo: ' . $frecuencia->alelo . ' de la tabla de frecuencias: ' . $frecuencia->importacion_frecuencia->nombre_otorgado,
+        ]);
+
         flash('El marcador fue eliminado correctamente', 'success');
         return redirect()->route('importaciones_frecuencias.show', $frecuencia->importacion_frecuencia->id);
     }

@@ -15,7 +15,7 @@ class CreateMarcadoresTable extends Migration
     {
         Schema::create('marcadores', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
+            $table->string('nombre')->index();
             $table->integer('id_usuario_registro')->unsigned();
             $table->integer('id_usuario_edito')->unsigned()->nullable();
             $table->integer('id_tipo_de_marcador')->unsigned();

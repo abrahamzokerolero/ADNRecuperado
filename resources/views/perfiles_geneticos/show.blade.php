@@ -30,9 +30,10 @@
 					<div class="card-header text-center text-muted">
 						@can('perfiles_geneticos.edit')
 							@if($perfil_genetico->requiere_revision == 1 && $perfil_genetico->desestimado == 0 )	
-								<select name="validacion" class="float-left btn border">
+								<select name="validacion" class="float-left btn border w-25">
 								  <option value="aprobar">APROBAR</option>
-								  <option value="desestimar">DESESTIMAR</option>
+								  <option value="POR NUMERO DE MARCADORES">DESESTIMAR POR NUMERO DE MARCADORES</option>
+								  <option value="POR NUMERO DE HOMOCIGOTOS">DESESTIMAR POR HOMOCIGOTOS</option>
 								</select>
 								{!!Form::submit('Validar', ['class' => 'btn btn-primary ml-2 float-left'])!!}
 							@endif
@@ -49,6 +50,8 @@
 						    Detalle del Perfil Genetico
 						  </button>
 						</p>
+						{{-- Si quieres que salga desplegado el div del boton descomenta este y comenta el otro --}}
+						{{-- <div class="collapse show" id="collapseExample"> --}}
 						<div class="collapse" id="collapseExample">
 							 <div class="d-flex flex-wrap mt-2">
 								<td>
@@ -78,7 +81,7 @@
 									</div>
 								</td>
 								<td>
-									<div class="form-group metadato_datos ml-2">
+									<div class="form-group metadato_datos">
 										<label for="etiqueta" class="">Etiquetas</label>
 										<br>
 										<div class="">
@@ -86,6 +89,18 @@
 												<span name="etiqueta" class="btn btn-success disabled m-1">{{$etiqueta->etiqueta->nombre}}</span>
 											@endforeach
 										</div>
+									</div>
+									<div class="form-group metadato_datos ml-2">
+										<label for="etiqueta" class="">Se actualizo con los perfiles</label>
+										<br>
+										@if($perfil_genetico->se_actualizo_con_los_perfiles <> null)
+										<div class="">
+											@foreach(explode(',' , $perfil_genetico->se_actualizo_con_los_perfiles) as $perfil_duplicado)
+												<?php $perfil_duplicado = App\PerfilGenetico::where('identificador' , '=', $perfil_duplicado)->first() ?>
+												<a href="{{route('perfiles_geneticos.show', $perfil_duplicado->id)}}" class="btn btn-warning m-1"> {{$perfil_duplicado->identificador}}</a>
+											@endforeach
+										</div>
+										@endif
 									</div>							
 								</td>
 							</div>
@@ -94,23 +109,17 @@
 
 
 					<div class="container">
-						<p>
-						  <button class="btn btn-danger w-100 text-center" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="true" aria-controls="collapseExample2">
-						    Detalle de Metadatos
-						  </button>
-						</p>
-						<div class="collapse" id="collapseExample2">
-							<div class="d-flex flex-wrap mt-2">
-								@foreach($perfil_genetico->metadatos as $metadato)
-									<td>
-										<?php $tipo_de_metadato = App\TipoDeMetadato::find($metadato->id_tipo_de_metadato) ?>
-										<div class="form-group metadato_datos ml-2">
-											<label for="{{$tipo_de_metadato->nombre}}" class="">{{str_replace('_',' ',ucwords($tipo_de_metadato->nombre))}}</label>
-											<input type="text" name="{{$tipo_de_metadato->nombre}}" value="{{$metadato->dato}}" disabled class="form-control">
-										</div>
-									</td>
-								@endforeach
-							</div>
+						<div class="d-flex flex-wrap mt-2">
+							<div class="p-2 bg-danger mb-3 disabled text-center text-white w-100"> Detalle de Metadatos </div>
+							@foreach($perfil_genetico->metadatos as $metadato)
+								<td>
+									<?php $tipo_de_metadato = App\TipoDeMetadato::find($metadato->id_tipo_de_metadato) ?>
+									<div class="form-group metadato_datos ml-2">
+										<label for="{{$tipo_de_metadato->nombre}}" class="">{{str_replace('_',' ',ucwords($tipo_de_metadato->nombre))}}</label>
+										<input type="text" name="{{$tipo_de_metadato->nombre}}" value="{{$metadato->dato}}" disabled class="form-control">
+									</div>
+								</td>
+							@endforeach
 						</div>
 					</div>
 				</div>

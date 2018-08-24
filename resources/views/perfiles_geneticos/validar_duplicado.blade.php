@@ -14,7 +14,6 @@
 
 @section('content')
 	<div class="card-block">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 		<div class="container">
 			<div class="card-title p-3 card-header">
 				<img src="{{asset('images/genotipos.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> VALIDAR PERFIL  GENETICO DUPLICADO</span>
@@ -23,7 +22,7 @@
 	</div>
 	<div class=" container mt-2">
 		<div class="d-flex justify-content-between">
-			<div class="card w-25">
+			<div class="card col-md-3">
 				<table id="myTable" class="table">
 					<thead class="card-header bg-dark text-white">
 						<td>Marcadores</td>
@@ -46,9 +45,19 @@
 					</tbody>
 				</table>
 			</div>			
-			<div class="card w-25">
-				<div class="card-footer bg-warning"> Perfil Duplicado: <b>{{$perfil_genetico_repetido->identificador}}</b></div>
+			<div class="card col-md-4">
+				<div class="card-footer bg-warning"> Perfil Duplicado: <b>{{$perfil_genetico_repetido->identificador}} {{$perfil_genetico_repetido->id_externo}}</b> </div>
 				
+				<div class="mt-2 form-group">
+					@foreach($perfil_genetico_repetido->etiquetas as $etiqueta_asignada)
+						<div class="row pl-3 pr-3 pt-3">
+						    <div class="col">
+							  <span class="btn btn-success disabled m-1">{{$etiqueta_asignada->etiqueta->nombre }}</span>
+						    </div>
+						</div>	
+					@endforeach
+				</div>
+
 				<div class="mt-2 form-group">
 					@foreach($perfil_genetico_repetido->metadatos as $metadato)
 					<div class="row pl-3 pr-3 pt-3">
@@ -61,16 +70,17 @@
 				</div>
 			</div>
 			<div class="card w-50 ">
-				<div class="card-footer bg-danger text-white"> Perfil Original: <b>{{$perfil_genetico->identificador}}</b></div>
+				<div class="card-footer bg-danger text-white"> Perfil Original: <b>{{$perfil_genetico->identificador . ' ' . $perfil_genetico_repetido->id_externo}}</b></div>
 				{!! Form::open(array('route' => ['perfiles_geneticos.guardar_validacion_de_duplicado',$perfil_genetico_repetido->id], 'method' => 'PUT')) !!}﻿	
 				<div class="card-body text-justify">
 					<ul class="nav nav-tabs" id="myTab" role="tablist">
 					  <li class="nav-item">
-					    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a>
+					     {{-- <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a> --}}
+						 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">METADATOS</a>
 					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">DATOS DE FAMILIARES</a>
-					  </li>
+						{{--   <li class="nav-item">
+						    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">DATOS DE FAMILIARES</a>
+						  </li> --}}
 					</ul>
 					<div class="tab-content" id="myTabContent">
 					  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -95,9 +105,41 @@
 						      {{Form::text('fosa', $fosa , ['class' => 'form-control'])}}
 						    </div>
 						  </div>
-						  <hr>
+
+						  {{-- BORRAR DESDE AQUI SI QUIERE CAMBIARLO --}}
+
+						  <div class="row pl-3 pr-3 pt-3">
+							   <div class="col">
+							      {{Form::label('nombre_del_donante', 'Nombre del donante')}}
+							      {{Form::text('nombre_del_donante', $nombre_del_donante , ['class' => 'form-control'])}}
+							   </div>
+							   <div class="col">
+							      {{Form::label('curp_del_familiar', 'CURP del familiar')}}
+							      {{Form::text('curp_del_familiar', $curp_del_familiar , ['class' => 'form-control curp'])}}
+							    </div>
+							   </div>
+							   <div class="row pl-3 pr-3 pt-3">
+							   		<div class="col">
+								      {{Form::label('nombre_del_desaparecido', 'Nombre del desaparecido')}}
+								      {{Form::text('nombre_del_desaparecido', $nombre_del_desaparecido , ['class' => 'form-control'])}}
+								    </div>
+								    <div class="col">
+								      {{Form::label('curp_del_desaparecido', 'CURP del desaparecido')}}
+								      {{Form::text('curp_del_desaparecido', $curp_del_desaparecido , ['class' => 'form-control curp'])}}
+								    </div>
+								</div>
+								<div class="row pl-3 pr-3 pt-3">
+								    <div class="col">
+								      {{Form::label('parentesco_con_el_desaparecido', 'Parentesco con el desaparecido')}}
+								      {{Form::text('parentesco_con_el_desaparecido', $parentesco_con_el_desaparecido , ['class' => 'form-control'])}}
+								    </div>
+								</div>
+							  <hr>
+						  </div>
+
+						 
 					  </div>
-					  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					  {{-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 					  	<div class="card-header text-center text-white bg-danger mt-3">Datos de Familiares</div>
 						  <div class="row pl-3 pr-3 pt-3">
 						   <div class="col">
@@ -126,7 +168,7 @@
 							    </div>
 							</div>
 						 	<hr>
-					  </div>
+					  </div> --}}
 					  <div class="row pl-3 pr-3 pt-3">
 					    <div class="col">
 					      {{Form::label('clave_de_muestra', 'Clave de muestra')}}
@@ -208,21 +250,25 @@
 							<div class="col">
 								<label for="etiquetas">Seleccionar etiquetas para los perfiles</label>
 								<select class="form-control" name="etiquetas[]" id="etiquetas" placeholder="Seleccione las etiquetas" multiple>
-								<?php $etiqueta_asignada?>	
-								@foreach($categorias as $categoria)
-									<optgroup label="{{ strtoupper($categoria->nombre)}}">
-										@foreach($categoria->etiquetas as $etiqueta)
-											<?php 
-											$etiqueta_asignada = App\EtiquetaAsignada::where('id_perfil_genetico', '=', $perfil_genetico->id)->where('id_etiqueta', '=', $etiqueta->id)->first(); 
-											?>
+									<?php $etiqueta_asignada?>
+									@foreach($categorias as $categoria)
+										<optgroup label="{{ strtoupper($categoria->nombre)}}">
+											@foreach($categoria->etiquetas as $etiqueta)												
+												<?php 
+												$etiqueta_asignada = App\EtiquetaAsignada::where('id_perfil_genetico', '=', $perfil_genetico->id)->where('id_etiqueta', '=', $etiqueta->id)->first(); 
+												?>
 												@if(empty($etiqueta_asignada))
-													<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}}</option>
+													<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+														{{$etiqueta->perfiles_geneticos_asociados->count()}}
+													)</b></option>
 												@else
-													<option selected value="{{$etiqueta->id}}">{{$etiqueta->nombre}}</option>
+													<option selected value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+														{{$etiqueta->perfiles_geneticos_asociados->count()}}
+													)</b></option>
 												@endif
-										@endforeach	
-									</optgroup>
-								@endforeach
+											@endforeach	
+										</optgroup>
+									@endforeach	
 								</select>
 							</div>
 							</div>

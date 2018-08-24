@@ -6,7 +6,7 @@
 
 @section('content')
 	<?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 	<div class="container">
 		<div class="card-title p-3 card-header">
 			<img src="{{asset('images/etiquetas.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> ETIQUETAS EN: <b>{{$categoria->nombre}} </b></span>
@@ -30,7 +30,7 @@
 					<tr>
 						<td>{{$etiqueta->id}}</td>
 						<td>{{$etiqueta->nombre}}</td>
-						<td>{{$etiqueta->created_at}}</td>
+						<td>{{$etiqueta->perfiles_geneticos_asociados->count()}}</td>
 						<td class="text-right">
 							@if($usuario->estado->nombre == 'CNB')
 								@can('etiquetas.destroy')
@@ -48,8 +48,8 @@
 				@endforeach
 			</tbody>
 		</table>
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+		<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 		<script>
 			$(document).ready(function() {
 			  $('#myTable').DataTable({

@@ -54,8 +54,8 @@
 				{!! Form::open(array('route' => ['users.update',$user->id], 'method' => 'PUT'))!!}
 		
 				<div class="form-group">
-					{!! Form::label('name' , 'Nombre')!!}
-					{!! Form::text('name' , $user->name , [ 'class' => 'form-control', 'required'])!!}
+					{!! Form::label('username' , 'Nombre')!!}
+					{!! Form::text('username' , $user->username , [ 'class' => 'form-control', 'required'])!!}
 				</div>
 				<div class="form-group">
 					<label for="categoria_id" class="mt-2">Estado</label>

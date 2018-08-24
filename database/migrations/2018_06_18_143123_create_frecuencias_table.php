@@ -17,7 +17,7 @@ class CreateFrecuenciasTable extends Migration
             $table->increments('id');
             $table->integer('id_importacion')->unsigned();
             $table->integer('id_marcador')->unsigned();
-            $table->string('alelo');
+            $table->string('alelo')->index();
             $table->double('frecuencia', 6, 4);
             $table->boolean('desestimado')->default(false);
             $table->date('created_at')->default(date("Y-m-d H:i:s"));

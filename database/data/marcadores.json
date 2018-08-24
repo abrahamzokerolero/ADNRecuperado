@@ -1,398 +1,795 @@
 [
-	{
-		"marker": "amel",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "th01",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d3s1358",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "vwa",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d21s11",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "tpox",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d1s1656",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "se33",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d10s1248",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d22s1045",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d19s433",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
+
+    {
+
 		"marker": "d8s1179",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
-	{
-		"marker": "d2s1338",
+
+    {
+
+		"marker": "d21s11",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
-	{
-		"marker": "d2s441",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d18s51",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "fga",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d16s539",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "csf1po",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d13s317",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
-		"marker": "d5s818",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 1
-	},
-	{
+
+    {
+
 		"marker": "d7s820",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
+
+    {
+
+		"marker": "csf1po",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d3s1358",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "th01",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d13s317",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d16s539",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d2s1338",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+        "marker": "d19s433",
+
+        "who_registered": 1,
+
+        "who_edited": 1,
+
+        "id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "vwa",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "tpox",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d18s51",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
 	{
+
+		"marker": "amel",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d5s818",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "fga",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+	{
+
+		"marker": "d1s1656",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d2s441",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
+		"marker": "d10s1248",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+    {
+
 		"marker": "d12s391",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
-	{
-		"marker": "pentad",
+
+    {
+
+		"marker": "d22s1045",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
+
 	{
-		"marker": "pentae",
+
+		"marker": "se33",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
-	{
+
+    {
+
 		"marker": "yindel",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
+
 	{
+
+		"marker": "pentad",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+	{
+
+		"marker": "pentae",
+
+		"who_registered": 1,
+
+		"who_edited": 1,
+
+		"id_tipo_de_marcador": 1
+
+	},
+
+	{
+
 		"marker": "d6s1043",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
+
 	{
+
 		"marker": "d22s645",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 1
+
 	},
+
+    {
+
+        "marker": "dys391",
+
+        "who_registered": 1,
+
+        "who_edited": 1,
+
+        "id_tipo_de_marcador": 2
+
+	},
+
 	{
+
 		"marker": "dys456",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys389i",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys390",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys389ii",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys458",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys19",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys385",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys393",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys439",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys635",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys392",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "ygatah4",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys437",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys438",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys448",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys481",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys533",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys549",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys570",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys576",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys643",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
-		"marker": "dys391",
-		"who_registered": 1,
-		"who_edited": 1,
-		"id_tipo_de_marcador": 2
-	},
-	{
+
 		"marker": "dys387s1",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys449",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys460",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys518",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dys627",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 2
+
 	},
+
 	{
+
 		"marker": "dxs7132",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs7423",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs8378",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10074",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10079",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10101",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10103",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10134",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10135",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10146",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "dxs10148",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	},
+
 	{
+
 		"marker": "hprtb",
+
 		"who_registered": 1,
+
 		"who_edited": 1,
+
 		"id_tipo_de_marcador": 3
+
 	}
+
 ]

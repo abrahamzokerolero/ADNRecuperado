@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\CollectionDataTable;
 use Illuminate\Support\Facades\DB;
+use App\Log;
 
 
 class PerfilesGeneticosController extends Controller
@@ -499,7 +500,7 @@ class PerfilesGeneticosController extends Controller
         $usuario = User::find(Auth::id());
         $consecutivo = PerfilGenetico::where('id_estado', '=', $usuario->estado->id)->count()+1;
         $perfil_genetico = PerfilGenetico::create([
-            'identificador' => 'G-' . $usuario->id_estado . '-' . $consecutivo,
+            'identificador' => 'CNB-' . $usuario->id_estado . '-' . $consecutivo,
             'id_externo' => $request->clave_de_muestra,
             'id_usuario' => Auth::id(),
             'id_fuente' => $request->id_fuente,
@@ -519,6 +520,7 @@ class PerfilesGeneticosController extends Controller
                             'id_perfil_genetico' => $perfil_genetico->id,
 
                         ]);
+
                     }
                 }
                 else{
@@ -554,7 +556,7 @@ class PerfilesGeneticosController extends Controller
 
                                 $alelo = Alelo::where('id_perfil_genetico', '=', $perfil_genetico->id)->where('id_marcador', '=', $verifica_marcador->id)->first();
 
-                                $alelo->alelo_2 = $value;
+                                $alelo->alelo_2 = strtoupper($value);
                                 $alelo->save();
 
                                 if($alelo->alelo_1 == $alelo->alelo_2){
@@ -568,7 +570,7 @@ class PerfilesGeneticosController extends Controller
                                 $alelo = Alelo::create([
                                     'id_perfil_genetico' => $perfil_genetico->id,
                                     'id_marcador' => $verifica_marcador->id,
-                                    'alelo_1' => $value,
+                                    'alelo_1' => strtoupper($value),
                                 ]);
                                 $marcador_anterior = $verifica_marcador->nombre;
                                 $contador ++;
@@ -616,7 +618,7 @@ class PerfilesGeneticosController extends Controller
         $perfil_genetico->cadena_unica = $datos_perfil;
         $perfil_genetico->save();
 
-        $genotipo_repetido = PerfilGenetico::where('desestimado', '=', 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->orWhere('es_perfil_repetido', '=' , 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->first(); 
+        $genotipo_repetido = PerfilGenetico::where('desestimado', '=', 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->orWhere('es_perfil_repetido', '=' , 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->where('desestimado', '=', 0)->first(); 
         
         if($genotipo_repetido <> null){
           if($genotipo_repetido->id <> $perfil_genetico->id){
@@ -642,6 +644,12 @@ class PerfilesGeneticosController extends Controller
           }  
         }
         
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Ingreso el genotipo: ' . $perfil_genetico->identificador,
+        ]);
+
         return redirect()->route('perfiles_geneticos.index');
     }
 
@@ -668,7 +676,28 @@ class PerfilesGeneticosController extends Controller
     public function edit($id)
     {   
         $fuentes = Fuente::get();
-        $categorias = Categoria::with('etiquetas')->orderBy('nombre', 'ASC')->get();
+        $usuario = User::find(Auth::id());   
+        if($usuario->estado->nombre == "CNB"){
+            $categorias = Categoria::with(array('etiquetas' => function($query){
+              $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();            
+        }
+        else{
+            $categorias = Categoria::with(array('etiquetas' => function($query) use( &$usuario ){
+              $query->with(array('perfiles_geneticos_asociados' => function($query) use( &$usuario ){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0)
+                ->where('perfiles_geneticos.id_estado', '=', $usuario->estado->id);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();
+        }
+
+
         $marcadores = Marcador::get();
         $perfil_genetico = PerfilGenetico::find($id);
         // metadatos
@@ -898,7 +927,7 @@ class PerfilesGeneticosController extends Controller
         $perfil_genetico->cadena_unica = $datos_perfil;
         $perfil_genetico->save();
 
-        $genotipo_repetido = PerfilGenetico::where('desestimado', '=', 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->orWhere('es_perfil_repetido', '=' , 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->first(); 
+        $genotipo_repetido = PerfilGenetico::where('desestimado', '=', 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->orWhere('es_perfil_repetido', '=' , 0)->where('cadena_unica', '=', $perfil_genetico->cadena_unica)->where('desestimado', '=', 0)->first(); 
         
         if($genotipo_repetido <> null){
           if($genotipo_repetido->id <> $perfil_genetico->id){
@@ -923,7 +952,14 @@ class PerfilesGeneticosController extends Controller
             flash('Operacion completada', 'success');
           }  
         }
-        
+
+        $usuario = User::find(Auth()->id());  
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Actualizo el perfil_genetico: ' . $perfil_genetico->identificador,
+        ]);
+
         return redirect()->route('perfiles_geneticos.index');
     }
 
@@ -970,15 +1006,32 @@ class PerfilesGeneticosController extends Controller
       if($validacion == 'aprobar'){
         $perfil_genetico->requiere_revision = 0;
         $perfil_genetico->id_usuario_reviso = Auth::id();
-        flash('El perfil <b>' . $perfil_genetico->identificador . '</b> fue validado, ahora podra ser usado para las busquedas de las busquedas');
+        flash('El perfil <b>' . $perfil_genetico->identificador . '</b> fue validado');
       }
       else{
-        $perfil_genetico->desestimado = 1;
-        $perfil_genetico->requiere_revision = 1;
-        $perfil_genetico->id_usuario_reviso = Auth::id(); 
-        flash('El perfil fue <b>' . $perfil_genetico->identificador . '</b> fue desestimado');
+          if($validacion == 'POR NUMERO DE MARCADORES'){
+            $perfil_genetico->desestimado = 1;
+            $perfil_genetico->motivo_de_desestimacion = 'POR NUMERO DE MARCADORES';
+            $perfil_genetico->requiere_revision = 1;
+            $perfil_genetico->id_usuario_reviso = Auth::id(); 
+            flash('El perfil fue <b>' . $perfil_genetico->identificador . '</b> fue desestimado');
+          }
+          else{
+            $perfil_genetico->desestimado = 1;
+            $perfil_genetico->motivo_de_desestimacion = 'POR NUMERO DE HOMOCIGOTOS';
+            $perfil_genetico->requiere_revision = 1;
+            $perfil_genetico->id_usuario_reviso = Auth::id(); 
+            flash('El perfil fue <b>' . $perfil_genetico->identificador . '</b> fue desestimado');
+          }
       }
       $perfil_genetico->save();
+
+      $usuario = User::find(Auth()->id());  
+      $log = Log::create([
+          'id_usuario' => $usuario->id,
+          'id_estado' => $usuario->estado->id,
+          'actividad' => 'Comprobo el numero de homocigotos y marcadores del perfil_genetico: ' . $perfil_genetico->identificador,
+      ]);
       
       return redirect()->route('perfiles_geneticos.revision');
     }
@@ -1079,7 +1132,28 @@ class PerfilesGeneticosController extends Controller
 
     public function validar_duplicado($id){
         $fuentes = Fuente::get();
-        $categorias = Categoria::with('etiquetas')->orderBy('nombre', 'ASC')->get();
+
+        $usuario = User::find(Auth::id());   
+        if($usuario->estado->nombre == "CNB"){
+            $categorias = Categoria::with(array('etiquetas' => function($query){
+              $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();            
+        }
+        else{
+            $categorias = Categoria::with(array('etiquetas' => function($query) use( &$usuario ){
+              $query->with(array('perfiles_geneticos_asociados' => function($query) use( &$usuario ){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0)
+                ->where('perfiles_geneticos.id_estado', '=', $usuario->estado->id);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();
+        }
+        
         $marcadores = Marcador::get();
         $perfil_genetico_repetido = PerfilGenetico::find($id);
         $perfil_genetico = PerfilGenetico::find($perfil_genetico_repetido->id_perfil_original);
@@ -1171,13 +1245,22 @@ class PerfilesGeneticosController extends Controller
       $perfil_genetico_repetido = PerfilGenetico::find($id);
       $perfil_genetico_original = PerfilGenetico::find($perfil_genetico_repetido->id_perfil_original);
       $perfil_genetico_repetido->desestimado = 1;
+      $perfil_genetico_repetido->motivo_de_desestimacion = 'DUPLICADO CON ' . $perfil_genetico_original->identificador;
       $perfil_genetico_repetido->id_usuario_reviso = $usuario_reviso->id;
       $perfil_genetico_repetido->save();
       $perfil_genetico_original->id_externo = $request->clave_de_muestra;
       $perfil_genetico_original->id_fuente = $request->id_fuente;
       $perfil_genetico_original->save();
 
-      
+      if($perfil_genetico_original->se_actualizo_con_los_perfiles == null){
+          $perfil_genetico_original->se_actualizo_con_los_perfiles = $perfil_genetico_repetido->identificador;
+      }
+      else{
+          $perfil_genetico_original->se_actualizo_con_los_perfiles = $perfil_genetico_original->se_actualizo_con_los_perfiles . ',' .  $perfil_genetico_repetido->identificador; 
+      }
+
+      $perfil_genetico_original->save();
+
         foreach ($perfil_genetico_original->etiquetas as $etiqueta){
             $etiqueta->delete();
         }
@@ -1231,7 +1314,119 @@ class PerfilesGeneticosController extends Controller
                 }
             }
         }
+
+        $usuario = User::find(Auth()->id());  
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Valido la informacion del perfil genetico ' . $perfil_genetico_original->identificador . ' debido a que se ingreso el perfil genetico duplicado: ' . $perfil_genetico_repetido->identificador,
+        ]);
+
         flash('El perfil duplicado fue desestimado  y el perfil original fue actualizado', 'success');
         return redirect()->route('perfiles_geneticos.show', $perfil_genetico_original); 
     }
+
+    public function etiquetar(Request $request){
+       if($request->ajax()){
+
+        $contador = 0;
+        $etiquetas_nombres = '';
+        // Obtenemos las etiquetas que se seleccionaron y las iteramos
+        foreach ($request->etiquetas3 as $etiqueta) {
+
+          // Verificamos que no exista la etiqueta en el perfil seleccionado
+          foreach (explode(',' , $request->seleccionados) as $perfil_genetico) {
+            $perfil_genetico_asignado = EtiquetaAsignada::where('id_perfil_genetico', $perfil_genetico)
+            ->where('id_etiqueta', $etiqueta)
+            ->get();
+            // Si se obtiene un objeto vacio quiere decir que para ese perfil aun no existe la etiqueta
+            // y debemos crearla
+            if($perfil_genetico_asignado->isEmpty()){
+              $asignar_etiqueta = EtiquetaAsignada::create([
+                  'id_etiqueta' => $etiqueta,
+                  'id_perfil_genetico' => $perfil_genetico,
+              ]);
+              $contador++;
+            }
+          }
+        }
+
+        foreach ($request->etiquetas3 as $etiqueta) {
+          $etiqueta = Etiqueta::find($etiqueta);
+          $etiquetas_nombres = $etiquetas_nombres . ',' . $etiqueta->nombre;
+        }
+
+        $usuario = User::find(Auth()->id());  
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Se realizo un etiquetado de perfiles geneticos con las etiquetas: ' . $etiquetas_nombres,
+        ]);
+
+        $categorias = Categoria::with(array('etiquetas' => function($query){
+          $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+            $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+            ->where('perfiles_geneticos.desestimado', 0)
+            ->where('perfiles_geneticos.es_perfil_repetido', 0);
+          }))->where('desestimado', 0);
+        }))->where('desestimado', '=', 0)->get();
+
+        return response()->json([
+          'newData' => $contador,
+          'categorias' => $categorias,
+        ]); 
+      }
+    }
+
+    public function desetiquetar(Request $request){
+
+       if($request->ajax()){
+
+        $contador = 0;
+        $etiquetas_nombres = '';
+        
+        // Obtenemos las etiquetas que se seleccionaron y las iteramos
+        foreach ($request->etiquetas4 as $etiqueta) {
+
+          // Verificamos que exista la etiqueta en el perfil seleccionado
+          foreach (explode(',' , $request->seleccionados) as $perfil_genetico) {
+            $perfil_genetico_asignado = EtiquetaAsignada::where('id_perfil_genetico', $perfil_genetico)
+            ->where('id_etiqueta', $etiqueta)
+            ->first();
+
+            // Si obtenemos un objeto de respuesta diferente de vacio es eliminar esa etiqueta
+            if(!empty($perfil_genetico_asignado)){
+              $perfil_genetico_asignado->delete();
+              $contador++;
+            }
+          }
+        }
+
+        // foreach ($request->etiquetas3 as $etiqueta) {
+        //   $etiqueta = Etiqueta::find($etiqueta);
+        //   $etiquetas_nombres = $etiquetas_nombres . ',' . $etiqueta->nombre;
+        // }
+
+        $usuario = User::find(Auth()->id());  
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            // 'actividad' => 'Se realizo un etiquetado de perfiles geneticos con las etiquetas: ' . $etiquetas_nombres,
+            'actividad' => 'Se eliminaron las etiquetas para los perfiles geneticos seleccionados',
+        ]);
+
+        $categorias = Categoria::with(array('etiquetas' => function($query){
+          $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+            $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+            ->where('perfiles_geneticos.desestimado', 0)
+            ->where('perfiles_geneticos.es_perfil_repetido', 0);
+          }))->where('desestimado', 0);
+        }))->where('desestimado', '=', 0)->get();
+
+        return response()->json([
+          'contador' => $contador,
+          'categorias' => $categorias,
+        ]); 
+      }
+    } 
 }

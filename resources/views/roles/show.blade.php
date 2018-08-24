@@ -27,5 +27,18 @@
 				{!! Form::label('description' , 'Descripcion')!!}
 				{!! Form::text('description' , $rol->description , [ 'class' => 'form-control', 'readonly'])!!}
 			</div>
+
+			{{-- <div class="form-control`">
+				<ul class="list-unstyled">
+					@foreach($permissions as $permission)
+						<li>
+							<label>{!! Form::checkbox('permissions[]', $permission->id, null) !!}
+								<b>{{ $permission->name}} : </b>
+								<em>({{ $permission->description ?: 'Sin description'}})</em>
+							</label>
+						</li>
+					@endforeach
+				</ul>
+			</div> --}}
 		</div>
 @endsection

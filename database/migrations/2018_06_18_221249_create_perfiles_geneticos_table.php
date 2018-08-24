@@ -15,7 +15,7 @@ class CreatePerfilesGeneticosTable extends Migration
     {
         Schema::create('perfiles_geneticos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('identificador');
+            $table->string('identificador')->index();
             $table->integer('id_importacion')->unsigned()->nullable();
             $table->integer('id_usuario')->unsigned()->nullable();
             $table->string('id_externo')->nullable();
@@ -25,11 +25,13 @@ class CreatePerfilesGeneticosTable extends Migration
             $table->boolean('requiere_revision')->default(false);
             $table->integer('id_usuario_reviso')->unsigned()->nullable();
             $table->boolean('es_perfil_repetido')->default(false);
+            $table->string('se_actualizo_con_los_perfiles')->nullable();
             $table->integer('id_perfil_original')->unsigned()->nullable();
             $table->integer('id_estado_perfil_original')->unsigned()->nullable();
             $table->integer('id_estado')->unsigned()->nullable();
-            $table->string('cadena_unica')->nullable();
-            $table->boolean('desestimado')->default(false);;
+            $table->string('cadena_unica')->nullable()->index();
+            $table->boolean('desestimado')->default(false)->index();
+            $table->string('motivo_de_desestimacion')->nullable();
             $table->date('created_at')->default(date("Y-m-d H:i:s"));
             $table->date('updated_at')->default(date("Y-m-d H:i:s"));
 

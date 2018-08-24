@@ -34,34 +34,40 @@
 
 	<!-- Formulario edicion de una etiqueta-->
 
-	<div class="container w-75">
+	<div class="container">
 		<p class="card-header bg-info">Actualizacion de datos</p>
 	
 		{!! Form::open(array('route' => ['fuentes.update',$fuente->id], 'method' => 'PUT')) !!}﻿
 
 		<div class="p-3">
 			<div class="form-group">
-				{!! Form::label('nombre' , 'Nombre de fuente')!!}
-					{!! Form::text('nombre' , $fuente->nombre , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre asociado a la fuente' , 'required'])!!}
-
-					{!! Form::label('id_interno' , 'Identificador interno')!!}
-					{!! Form::text('id_interno' , $fuente->id_interno , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador interno' , 'required'])!!}
-
-					{!! Form::label('id_externo' , 'Identificador externo')!!}
-					{!! Form::text('id_externo' , $fuente->id_externo , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador externo'])!!}
-
-					{!! Form::label('contacto_fuente' , 'Nombre de contacto')!!}
-					{!! Form::text('contacto_fuente' , $fuente->contacto_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre de contacto'])!!}
-
-					{!! Form::label('correo_fuente' , 'Correo de contacto')!!}
-					<input type="email" name="correo_fuente" class="form-control" placeholder="Ingrese el correo de contacto" value="{{$fuente->correo_fuente}}">	
-
-
-					{!! Form::label('telefono1_fuente' , 'Telefono de contacto')!!}
-					{!! Form::text('telefono1_fuente' , $fuente->telefono1_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono de contacto'])!!}
-
-					{!! Form::label('telefono2_fuente' , 'Otro numero de contacto')!!}
-					{!! Form::text('telefono2_fuente' , $fuente->telefono2_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono alternativo'])!!}
+				<div class="row">
+					<div class="col">
+						{!! Form::label('nombre' , 'Nombre de fuente')!!}
+						{!! Form::text('nombre' , $fuente->nombre , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre asociado a la fuente' , 'required'])!!}
+						
+						{!! Form::label('id_interno' , 'Identificador interno')!!}
+						{!! Form::text('id_interno' , $fuente->id_interno , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador interno' , 'required'])!!}
+						
+						{!! Form::label('id_externo' , 'Identificador externo')!!}
+						{!! Form::text('id_externo' , $fuente->id_externo , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador externo'])!!}
+						
+						{!! Form::label('contacto_fuente' , 'Nombre de contacto')!!}
+						{!! Form::text('contacto_fuente' , $fuente->contacto_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre de contacto'])!!}
+					</div>
+					
+					<div class="col">
+						{!! Form::label('correo_fuente' , 'Correo de contacto')!!}
+						<input type="email" name="correo_fuente" class="form-control" placeholder="Ingrese el correo de contacto" value="{{$fuente->correo_fuente}}">	
+						
+						
+						{!! Form::label('telefono1_fuente' , 'Telefono de contacto')!!}
+						{!! Form::text('telefono1_fuente' , $fuente->telefono1_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono de contacto'])!!}
+						
+						{!! Form::label('telefono2_fuente' , 'Otro numero de contacto')!!}
+						{!! Form::text('telefono2_fuente' , $fuente->telefono2_fuente , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono alternativo'])!!}
+					</div>
+				</div>
 			</div>
 
 			<div class="form-group text-right">

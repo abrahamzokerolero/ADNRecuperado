@@ -9,6 +9,9 @@ use App\Categoria;
 use App\Etiqueta;
 use App\EtiquetaAsignada;
 use Laracast\Flash\Flash;
+use App\Log;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 
 class EtiquetasController extends Controller
@@ -60,7 +63,7 @@ class EtiquetasController extends Controller
 
             /* Elimina los espacios en blanco de la cadena            
             $etiquetas = str_replace(' ', '', $etiquetas);*/
-
+            $etiquetas_nombres = '';
 
             /* Separa las etiquetas entre comas*/            
             $etiquetas = explode(',', $etiquetas);
@@ -75,6 +78,7 @@ class EtiquetasController extends Controller
                         'created_at' => date("Y-m-d H:i:s"),
                         'updated_at' => date("Y-m-d H:i:s"),
                     ]);
+                    $etiquetas_nombres = $etiquetas_nombres . ',' . $etiqueta->nombre;
                 }
             }
             else {
@@ -84,7 +88,16 @@ class EtiquetasController extends Controller
                     'created_at' => date("Y-m-d H:i:s"),
                     'updated_at' => date("Y-m-d H:i:s"),
                 ]);  
+                $etiquetas_nombres = $etiquetas_nombres . ',' . $etiqueta->nombre;
             }
+
+            $usuario = User::find(Auth::id());
+            $log = Log::create([
+                'id_usuario' => $usuario->id,
+                'id_estado' => $usuario->estado->id,
+                'actividad' => 'Agrego las etiquetas: ' . $etiquetas_nombres,
+            ]);
+
             flash('Se realizaron exitosamente los cambios', 'success');
             return redirect('categorias'); 
         }
@@ -147,6 +160,14 @@ class EtiquetasController extends Controller
             $etiqueta->categoria_id = $request->categoria_id;
             $etiqueta->updated_at = date("Y-m-d H:i:s");
             $etiqueta->save();
+
+            $usuario = User::find(Auth::id());
+            $log = Log::create([
+                'id_usuario' => $usuario->id,
+                'id_estado' => $usuario->estado->id,
+                'actividad' => 'Modifico la etiqueta: ' . $etiqueta->nombre,
+            ]);
+
             Flash('La etiqueta se actualizo correctamente', 'success');
             return redirect('categorias/'. $request->categoria_id);
         }
@@ -171,7 +192,14 @@ class EtiquetasController extends Controller
         $etiqueta->desestimado = 1;
         $etiqueta->save();
 
-        Flash('La etiqueta ' .$etiqueta->nombre . ' fue eliminada exitosamente', 'success');
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' =>  $usuario->estado->id,
+            'actividad' => 'Elimino la etiqueta: ' . $etiqueta->nombre,
+        ]);
+
+        Flash('La etiqueta ' . $etiqueta->nombre . ' fue eliminada exitosamente', 'success');
 
         if($etiqueta->categoria_id <> null){
             return redirect('categorias/'. $etiqueta->categoria_id);

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Input;   // Para saber el nombre del archivo reci
 use Illuminate\Support\Facades\Auth;    // Para obtener datos del usuario en la session
 use Validator;                          // Para validar el formulario de carga del excel
 use Maatwebsite\Excel;                  // Para la lectura del excel
+use App\Log;
 
 class ImportacionesFrecuenciasController extends Controller
 {
@@ -157,6 +158,12 @@ class ImportacionesFrecuenciasController extends Controller
                 }
             });
 
+            $usuario = User::find(Auth::id());
+            $log = Log::create([
+                'id_usuario' => $usuario->id,
+                'id_estado' => $usuario->estado->id,
+                'actividad' => 'Importo la tabla de frecuencias: ' . $importacion_frecuencias->nombre_otorgado,
+            ]);
             
             return redirect()->route('importaciones_frecuencias.index');
         }
@@ -221,6 +228,13 @@ class ImportacionesFrecuenciasController extends Controller
 
         $importacion->desestimado = 1;
         $importacion->save();
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Elimino la tabla de frecuencias: ' . $importacion->nombre_otorgado,
+        ]);
 
         Flash('Se elimino correctamente la importacion seleccionada', 'success');
         return redirect()->route('importaciones_frecuencias.index');

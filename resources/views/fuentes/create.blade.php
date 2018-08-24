@@ -35,38 +35,42 @@
 	
 
 	<!-- Formulario de ingreso de una nueva categoria-->
-	<div class="container w-75">
+	<div class="container">
 		
 		<p class="card-header bg-info"><b>Crear fuente</b></p>
 		{!! Form::open(['route' => 'fuentes.store', 'method'=> 'POST' ]) !!}
 		<div class="p-3">
 				<divv class="form-group">
-					{!! Form::label('nombre' , 'Nombre de fuente')!!}
-					{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre asociado a la fuente' , 'required'])!!}
-
-					{!! Form::label('id_interno' , 'Identificador interno')!!}
-					{!! Form::text('id_interno' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador interno' , 'required'])!!}
-
-					{!! Form::label('id_externo' , 'Identificador externo')!!}
-					{!! Form::text('id_externo' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador externo'])!!}
-
-					{!! Form::label('contacto_fuente' , 'Nombre de contacto')!!}
-					{!! Form::text('contacto_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre de contacto'])!!}
-
-					{!! Form::label('correo_fuente' , 'Correo de contacto')!!}
-					<input type="email" name="correo_fuente" class="form-control" placeholder="Ingrese el correo de contacto">	
-
-
-					{!! Form::label('telefono1_fuente' , 'Telefono de contacto')!!}
-					{!! Form::text('telefono1_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono de contacto'])!!}
-
-					{!! Form::label('telefono2_fuente' , 'Otro numero de contacto')!!}
-					{!! Form::text('telefono2_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono alternativo'])!!}
+					<div class="row">
+						<div class="col">
+							{!! Form::label('nombre' , 'Nombre de fuente')!!}
+							{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre asociado a la fuente' , 'required'])!!}
+							
+							{!! Form::label('id_interno' , 'Identificador interno')!!}
+							{!! Form::text('id_interno' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador interno' , 'required'])!!}
+							
+							{!! Form::label('id_externo' , 'Identificador externo')!!}
+							{!! Form::text('id_externo' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un identificador externo'])!!}
+							
+							{!! Form::label('contacto_fuente' , 'Nombre de contacto')!!}
+							{!! Form::text('contacto_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un nombre de contacto'])!!}
+						</div>
+						
+						<div class="col">
+							{!! Form::label('correo_fuente' , 'Correo de contacto')!!}
+							<input type="email" name="correo_fuente" class="form-control" placeholder="Ingrese el correo de contacto">	
+							
+							
+							{!! Form::label('telefono1_fuente' , 'Telefono de contacto')!!}
+							{!! Form::text('telefono1_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono de contacto'])!!}
+							
+							{!! Form::label('telefono2_fuente' , 'Otro numero de contacto')!!}
+							{!! Form::text('telefono2_fuente' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un telefono alternativo'])!!}
+						</div>
+					</div>
 				</div>
-				
-				
 		</div>
-		<div class="form-group text-center">
+		<div class="form-group float-right">
 			{!! Form::submit('Guardar', ['class' => 'btn btn-primary mr-3']) !!}
 			
 			<div class="btn btn-primary"><a href="{{route('fuentes.index')}}" class="text-white">Regresar</a></div>

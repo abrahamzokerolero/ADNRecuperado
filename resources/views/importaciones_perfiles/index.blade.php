@@ -7,9 +7,13 @@
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
 
 @section('content')
-	<?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
+	<?php 
+	    use Carbon\Carbon;
+		$usuario = App\User::find(Illuminate\Support\Facades\Auth::id());
+	?>
+
 	<div class="card-block">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 		<div class="container">
 			<div class="card-title p-3 card-header">
 				<img src="{{asset('images/importar.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> LISTA DE IMPORTACIONES </span>
@@ -43,7 +47,7 @@
 							
 							<td><a href="{{ route('importaciones_perfiles.show', $importacion->id)}}">{{$importacion->identificador}}</a></td>
 							
-							<td>{{$importacion->created_at}}</td>
+							<td>{{Carbon::parse($importacion->created_at)->format('d/m/Y')}}</td>
 							
 							<td class="text-center"><a href="" class="btn btn-outline-primary btn-sm disabled">{{$importacion->numero_de_perfiles}}</a></td>
 
@@ -67,8 +71,8 @@
 					@endforeach
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  $('#myTable').DataTable({

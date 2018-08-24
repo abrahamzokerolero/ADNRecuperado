@@ -27,7 +27,7 @@
 
 	<div class="container w-75">
 		<p class="card-header"><b>Crear nuevo rol</b></p>
-		{!! Form::open(['route' => 'roles.store', 'method'=> 'PUT' ]) !!}
+		{!! Form::open(['route' => 'roles.store', 'method'=> 'POST' ]) !!}
 		<div class="p-3">
 				<divv class="form-group">
 					{!! Form::label('name' , 'Nombre del Rol')!!}
@@ -53,7 +53,7 @@
 					<ul class="list-unstyled">
 						@foreach($permissions as $permission)
 							<li>
-								<label>{!! Form::checkbox('permissions[]', $permission->id, null) !!}
+								<label>{!! Form::checkbox('permissions[]', $permission->id) !!}
 									<b>{{ $permission->name}} : </b>
 									<em>({{ $permission->description ?: 'Sin description'}})</em>
 								</label>

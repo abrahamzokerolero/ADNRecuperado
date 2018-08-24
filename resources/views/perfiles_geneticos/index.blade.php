@@ -6,8 +6,8 @@
 
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
 @section('script')
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
+	<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
 	<link rel="stylesheet" href="{{asset('css/choices.min.css?version=3.0.4')}}">
   	<script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script> 
 @endsection
@@ -83,7 +83,7 @@
 					  	{!! Form::open(array('route' => ['perfiles_geneticos.filtro_por_etiquetas'], 'method' => 'POST')) !!}﻿
 					  	<div class="row pb-3">
 					  		<div class="col">
-					  			<select class="form-control" name="etiquetas[]" id="etiquetas" multiple required>
+					  			<select class="form-control" name="etiquetas[]" id="etiquetas" multiple>
 									@foreach($categorias as $categoria)
 										<optgroup label="{{ strtoupper($categoria->nombre)}}">
 											@foreach($categoria->etiquetas as $etiqueta)
@@ -293,7 +293,7 @@
 					        	<div class="row">
 					        		<div class="col">
 					        			<label for="etiquetas2" class="">ETIQUETAS</label>
-							  			<select class="form-control etiquetas2" name="etiquetas2[]" id="etiquetas2" multiple required>
+							  			<select class="form-control etiquetas2" name="etiquetas2[]" id="etiquetas2" multiple>
 											@foreach($categorias as $categoria)
 												<optgroup label="{{ strtoupper($categoria->nombre)}}">
 													@foreach($categoria->etiquetas as $etiqueta)
@@ -326,8 +326,83 @@
 				</div>
 			  </div>
 			</div>
+			<div class="container">
+				<span class="bg-warning form-control mensaje_de_error8 text-center mt-3 mb-2">Mensaje de error</span>
+				<script type="text/javascript"> $('.mensaje_de_error8').hide();</script>
+				<div class="row mt-3">
+					<div class="col">
+						<button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+						    Agregar etiquetas
+						</button>
+
+						<button class="btn ml-2" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+						    Eliminar etiquetas
+						</button>
+						
+						<div class="collapse mt-1" id="collapseExample2">
+						  {!! Form::open(array('route' => ['perfiles_geneticos.etiquetar'], 'method' => 'POST')) !!}﻿
+						  <div class="card card-body">
+						  		<div class="card-header text-success mb-2"> Seleccione etiquetas para agregar</div>
+						  		<div class="row">
+						  			<div class="col-8">
+						  				<select class="form-control etiquetas3" name="etiquetas3[]" id="etiquetas3" multiple>
+											@foreach($categorias as $categoria)
+												<optgroup label="{{ strtoupper($categoria->nombre)}}">
+													@foreach($categoria->etiquetas as $etiqueta)
+														<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+															{{$etiqueta->perfiles_geneticos_asociados->count()}}
+														)</b></option>
+													@endforeach	
+												</optgroup>
+											@endforeach
+										</select>			
+						  			</div>
+						  			<div class="col-2">
+						  				<button id="guardar_etiquetas" class="btn btn-primary m-1">Guardar</button>		
+						  			</div>
+						  		</div>
+						  </div>
+						  {!!Form::close()!!}
+						</div>
+
+						<div class="collapse mt-1" id="collapseExample3">
+						  {!! Form::open(array('route' => ['perfiles_geneticos.desetiquetar'], 'method' => 'POST')) !!}﻿
+						  <div class="card card-body">
+						  		<div class="card-header text-danger mb-2"> Seleccione etiquetas a eliminar</div>
+						  		<div class="row">
+						  			<div class="col-8">
+						  				<select class="form-control etiquetas4" name="etiquetas4[]" id="etiquetas4" multiple>
+											@foreach($categorias as $categoria)
+												<optgroup label="{{ strtoupper($categoria->nombre)}}">
+													@foreach($categoria->etiquetas as $etiqueta)
+														<option value="{{$etiqueta->id}}">{{$etiqueta->nombre}} <b>(
+															{{$etiqueta->perfiles_geneticos_asociados->count()}}
+														)</b></option>
+													@endforeach	
+												</optgroup>
+											@endforeach
+										</select>			
+						  			</div>
+						  			<div class="col-2">
+						  				<button id="borrar_etiquetas" class="btn btn-primary m-1">Borrar</button>		
+						  				{{-- <input type="submit" name="boton9" value="Borrar"> --}}
+						  			</div>
+						  		</div>
+						  </div>
+						  {!!Form::close()!!}
+						</div>
+					</div>
+					<div class="col">
+						<div class="d-flex justify-content-end">
+							<input type="button" id ="seleccionarAll" value="Seleccionar todo" class="btn mr-3">
+							<input type="button" id ="seleccionarNone" value="Borrar seleccion" class="btn">
+						</div>
+					</div>
+				</div>
+			</div>
 			<table id="myTable" class="table">
 				<thead class="card-header bg-danger text-white">
+					<td hidden>Id</td>
 					<td>ID interno</td>
 					<td>ID externo</td>
 					<td>Marcadores</td>
@@ -339,16 +414,27 @@
 					
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 
 				  var data = <?php echo $perfiles_geneticos;?>;
 				  var oTable = $('#myTable').DataTable({
+				  		"order": [ 0 , 'desc'],
+				  		"language": {
+						  "url": "http://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+						},
+						select: {
+				            style: 'multi'
+				        },
 			            data:data,
-				        columnDefs: [{"className": "dt-center", "targets": "_all"}],
+				        columnDefs: [{"className": "dt-center", "targets": "_all"}, {
+			                "targets": [ 0 ],
+			                "visible": false,
+			                "searchable": false,
+			            },],
 			            columns: [
+			            	{ data: 'id'},	
 					        { data: 'identificador',
 						    render: function ( data, type, row ) {
 							        return '<a href="perfiles_geneticos/'+ row.id +'">'+ data + '</a>';
@@ -366,9 +452,237 @@
 							    }
 					        },
 					        { data: 'name' },
-					        { data: 'created_at'},
+					        { data: 'created_at', 
+					        	render: function (data, type, row){
+					        		var date = new Date(data);
+					        		return date.toLocaleDateString()
+					        	}
+					    	},
+					    	
 					    ]
 			        });
+
+				  	 $('#seleccionarAll').click( function () {
+				  	 	var oTable = $('#myTable').DataTable();
+				  	 	oTable.rows().select();
+				      });
+
+				  	 $('#seleccionarNone').click( function (){
+				  	 	var oTable = $('#myTable').DataTable();
+				  	 	oTable.rows().deselect();
+				  	 });
+
+				  	 $('#guardar_etiquetas').click( function (e) {
+				  	 	e.preventDefault();
+						$('button').addClass('disabled');										  	 	
+				  	 	var seleccionados = [];
+
+				  	 	for (var i = 0; i < oTable.rows('.selected').data().length; i++) {						 
+						    seleccionados.push(oTable.rows('.selected').data()[i].id);
+						}
+						if(seleccionados.length == 0){
+							// mandar mensaje de error
+							mensaje_error('.mensaje_de_error8', 'No selecciono ningun perfil genetico'); 
+							$('button').removeClass('disabled');
+						}
+						else{
+							if($('.etiquetas3').val() != ''){
+								var form = $(this).parents('form');
+					        	var url = form.attr('action');
+
+					        	var data = form.serializeArray();
+								data.push({name: 'seleccionados', value: seleccionados});
+
+					        	$.ajax({
+								    type: "POST",
+								    url: url,
+								    data: data,
+								    dataType: "json",
+								    success: function(data) {
+								        if(data.newData == 0){
+								        	mensaje_exitoso('.mensaje_de_error8', 'Las etiquetas ya habian sido asignadas a los perfiles seleccionados');
+								        }
+								        else{
+
+								        	multipleDefault1.destroy();
+								        	multipleDefault2.destroy();
+								        	multipleDefault3.destroy();
+								        	multipleDefault4.destroy();
+
+								        	for(i in data.categorias){
+							                	$("select[name='etiquetas[]']").append('<optgroup id="' + data.categorias[i].nombre + '1" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'1"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas2[]']").append('<optgroup id="' + data.categorias[i].nombre  + '2" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'2"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas3[]']").append('<optgroup id="' + data.categorias[i].nombre + '3" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'3"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas4[]']").append('<optgroup id="' + data.categorias[i].nombre + '4" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'4"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+							                }
+
+							              multipleDefault1 = new Choices(document.getElementById('etiquetas'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault2 = new Choices(document.getElementById('etiquetas2'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault3 = new Choices(document.getElementById('etiquetas3'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault4 = new Choices(document.getElementById('etiquetas4'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+									      $('button').removeClass('disabled');
+								          mensaje_exitoso('.mensaje_de_error8', 'Se asignaron correctamente las etiquetas');
+								        }
+								    },
+								    error: function() {
+								    	$('button').removeClass('disabled');
+								    	mensaje_error('.mensaje_de_error8', 'Las etiquetas no pudieron ser asignadas, intentelo de nuevo'); 
+								    }
+								});	
+							}
+							else{
+								//mandar mensaje en pantala de error
+								$('button').removeClass('disabled');
+								mensaje_error('.mensaje_de_error8', 'Debe seleccionar al menos una etiqueta'); 
+							}						
+							
+
+							// $.post(url, {form.serialize(), seleccionados}, function(result){
+				   //      		console.log(result.newData)
+				   //      	}).fail(function(){
+				   //      		alert('Fallo la consulta');
+				   //      	});
+						}	
+				    });
+
+
+				  	$('#borrar_etiquetas').click( function (e) {
+				  	 	e.preventDefault();
+				  	 	$('button').addClass('disabled');
+				  	 	var seleccionados = [];
+
+				  	 	for (var i = 0; i < oTable.rows('.selected').data().length; i++) {						 
+						    seleccionados.push(oTable.rows('.selected').data()[i].id);
+						}
+
+						if(seleccionados.length == 0){
+							// mandar mensaje de error
+							mensaje_error('.mensaje_de_error8', 'No selecciono ningun perfil genetico'); 
+							$('button').removeClass('disabled');
+						}
+						else{
+							if($('.etiquetas4').val() != ''){
+
+								var form = $(this).parents('form');
+					        	var url = form.attr('action');
+					        	var data = form.serializeArray();
+								data.push({name: 'seleccionados', value: seleccionados});
+
+					        	$.ajax({
+								    type: "POST",
+								    url: url,
+								    data: data,
+								    dataType: "json",
+
+								    success: function(data) {
+								        if(data.contador == 0){
+								        	mensaje_exitoso('.mensaje_de_error8', 'No existen las etiquetas en los perfiles seleccionados');
+								        	$('button').removeClass('disabled');
+								        }
+								        else{
+								        	multipleDefault1.destroy();
+								        	multipleDefault2.destroy();
+								        	multipleDefault3.destroy();
+								        	multipleDefault4.destroy();
+
+								        	for(i in data.categorias){
+							                	$("select[name='etiquetas[]']").append('<optgroup id="' + data.categorias[i].nombre + '1" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'1"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas2[]']").append('<optgroup id="' + data.categorias[i].nombre  + '2" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'2"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas3[]']").append('<optgroup id="' + data.categorias[i].nombre + '3" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'3"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+
+							                	$("select[name='etiquetas4[]']").append('<optgroup id="' + data.categorias[i].nombre + '4" label="'+ data.categorias[i].nombre +'"></optgroup>');
+							                	for(x in data.categorias[i].etiquetas){
+							                		$('optgroup[id="'+ data.categorias[i].nombre +'4"]').append('<option value='+ data.categorias[i].etiquetas[x].id +'>'+ '\t' + data.categorias[i].etiquetas[x].nombre +  ' (' +  data.categorias[i].etiquetas[x].perfiles_geneticos_asociados.length   +    ')</option>');	
+							                	}
+							                }							             
+
+							              multipleDefault1 = new Choices(document.getElementById('etiquetas'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault2 = new Choices(document.getElementById('etiquetas2'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault3 = new Choices(document.getElementById('etiquetas3'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+									      multipleDefault4 = new Choices(document.getElementById('etiquetas4'), {
+										    searchResultLimit: 100,
+										    resetScrollPosition: false,
+										    position: 'button',
+									      });
+
+								          mensaje_exitoso('.mensaje_de_error8', 'Se eliminaron exitosamente lass etiquetas en los perfiles seleccionados');
+								          $('button').removeClass('disabled');
+								        }
+								    },
+								    error: function() {
+								    	mensaje_error('.mensaje_de_error8', 'Las etiquetas no pudieron ser eliminadas, intentelo de nuevo');
+								    	$('button').removeClass('disabled'); 
+								    }
+								});	
+							}
+							else{
+								//mandar mensaje en pantala de error
+								mensaje_error('.mensaje_de_error8', 'Debe seleccionar al menos una etiqueta'); 
+								$('button').removeClass('disabled');
+							}						
+						}	
+				    }); 
+
 				  	$(".buscar").click(function(e){
 				        e.preventDefault();
 			        	var form = $(this).parents('form');
@@ -386,6 +700,7 @@
 				        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 								  oTable.row.add({
+								  	'id': result.newData[i].id,
 								  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 								 	"id_externo": result.newData[i].id_externo,
 					        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -421,6 +736,7 @@
 				        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 								  oTable.row.add({
+								  	'id': result.newData[i].id,
 								  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 								 	"id_externo": result.newData[i].id_externo,
 					        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -456,6 +772,7 @@
 				        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 								  oTable.row.add({
+								  	'id': result.newData[i].id,
 								  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 								 	"id_externo": result.newData[i].id_externo,
 					        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -489,6 +806,7 @@
 				        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 								  oTable.row.add({
+								  	'id': result.newData[i].id,
 								  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 								 	"id_externo": result.newData[i].id_externo,
 					        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -527,6 +845,7 @@
 						        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 										  oTable.row.add({
+										  	'id': result.newData[i].id,
 										  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 										 	"id_externo": result.newData[i].id_externo,
 							        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -571,6 +890,7 @@
 						        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 										  oTable.row.add({
+										  	'id': result.newData[i].id,
 										  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 										 	"id_externo": result.newData[i].id_externo,
 							        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -612,6 +932,7 @@
 					        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 									  oTable.row.add({
+									  	'id': result.newData[i].id,
 									  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 									 	"id_externo": result.newData[i].id_externo,
 						        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -636,12 +957,13 @@
 
 				    $(".restablecer").click(function(e){
 				        e.preventDefault();
-				        $.get('perfiles/restablecer', function(result){
+				        $.get('{{route('perfiles_geneticos.restablecer')}}', function(result){
 				            mensaje_exitoso('.mensaje_de_error7', 'Busqueda finalizada');	
 			        		oTable.clear();
 			        		for (var i = 0, len = result.newData.length; i < len; i++) {
 
 							  oTable.row.add({
+							  	'id': result.newData[i].id,
 							  	"identificador" : '<a href="perfiles_geneticos/' + result.newData[i].id + '">'+ result.newData[i].identificador +'</a>',
 							 	"id_externo": result.newData[i].id_externo,
 				        		"numero_de_marcadores": result.newData[i].numero_de_marcadores,
@@ -680,46 +1002,31 @@
 				    	$('.mensaje_de_error5').fadeOut();
 				    	$('.mensaje_de_error6').fadeOut();
 				    	$('.mensaje_de_error7').fadeOut();
+				    	$('.mensaje_de_error8').fadeOut();
 				    }
 
-				  var multipleDefault = new Choices(document.getElementById('etiquetas'),{
-				  	position: 'button',
-				  });
-			      var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-			        placeholder: true,
-			        placeholderValue: 'Pick an Strokes record',
-			        maxItemCount: 5,
-			        position: 'button',
-			      }).ajax(function(callback) {
-			        fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-			          .then(function(response) {
-			            response.json().then(function(data) {
-			              callback(data.releases, 'title', 'title');
-			            });
-			          })
-			          .catch(function(error) {
-			            console.error(error);
-			          });
+				  var multipleDefault1 = new Choices(document.getElementById('etiquetas'), {
+				    searchResultLimit: 100,
+				    resetScrollPosition: false,
+				    position: 'button',
 			      });
 
-			      var multipleDefault = new Choices(document.getElementById('etiquetas2'),{
-				  	position: 'button',
-				  });
-			      var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-			        placeholder: true,
-			        placeholderValue: 'Pick an Strokes record',
-			        maxItemCount: 5,
-			        position: 'button',
-			      }).ajax(function(callback) {
-			        fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-			          .then(function(response) {
-			            response.json().then(function(data) {
-			              callback(data.releases, 'title', 'title');
-			            });
-			          })
-			          .catch(function(error) {
-			            console.error(error);
-			          });
+			      var multipleDefault2 = new Choices(document.getElementById('etiquetas2'), {
+				    searchResultLimit: 100,
+				    resetScrollPosition: false,
+				    position: 'button',
+			      });
+
+			      var multipleDefault3 = new Choices(document.getElementById('etiquetas3'), {
+				    searchResultLimit: 100,
+				    resetScrollPosition: false,
+				    position: 'button',
+			      });
+
+			      var multipleDefault4 = new Choices(document.getElementById('etiquetas4'), {
+				    searchResultLimit: 100,
+				    resetScrollPosition: false,
+				    position: 'button',
 			      });
 				});
 

@@ -8,6 +8,10 @@ use Carbon\Carbon;
 use App\Etiqueta;
 use App\Categoria;
 use Laracast\Flash\Flash;
+use App\Log;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+
 
 class CategoriasController extends Controller
 {
@@ -43,12 +47,16 @@ class CategoriasController extends Controller
 
         $categoria = Categoria::create([
             'nombre' => $request->input('nombre'),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Creo la categoria: ' . $categoria->nombre,
         ]);
 
         flash('La categoria se ingreso correctamente', 'success');
-
         return redirect('categorias');
     }
 
@@ -102,6 +110,14 @@ class CategoriasController extends Controller
         $categoria->nombre = $request->nombre;
         $categoria->updated_at = date("Y-m-d H:i:s");
         $categoria->save();
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Actualizo la categoria: ' . $categoria->nombre,
+        ]);
+
         Flash('La categoria cambio de nombre a: <b>' . $categoria->nombre . '</b>', 'success');
         return redirect()->route('categorias.index');
     }
@@ -130,6 +146,13 @@ class CategoriasController extends Controller
 
         $categoria->desestimado = 1;
         $categoria->save();
+
+        $usuario = User::find(Auth::id());
+        $log = Log::create([
+            'id_usuario' => $usuario->id,
+            'id_estado' => $usuario->estado->id,
+            'actividad' => 'Elimino la categoria: ' . $categoria->nombre,
+        ]);
 
         Flash('La categoria ' .$categoria->nombre . ' fue eliminada exitosamente sin embargo debera asignar sus etiquetas manualmente', 'success');
 

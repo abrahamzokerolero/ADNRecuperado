@@ -21,13 +21,13 @@
 
 
     <!-- Styles Boostrap-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('css/bootstrap/bootstrap.min.css')}}" >
 
     <!-- Styles Default-->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Font awesome fonts-->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{asset('css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link rel="shortcut icon" href="{{{ asset('images/favicon.png') }}}">
 
 </head>
@@ -44,20 +44,37 @@
                     <ul class="navbar-nav ml-auto"> 
                         <!-- Authentication Links -->
                         @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Acceder') }}</a></li>
+                            {{-- <li><a class="nav-link" href="{{ route('login') }}">{{ __('Acceder') }}</a></li> --}}
                             
-                            <!--<li><a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a></li>-->
+                            {{-- <li><a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a></li> --}}
 
                         @else
+                            <?php 
+                              $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());
+                              $mensajes = App\Mensaje::where('id_estado_recibe', $usuario->estado->id)
+                              ->where('revisado', 0)
+                              ->get();
+                            ;?>
+                            <li class="nav-item">
+                                @if($mensajes->isEmpty())
+                                  <a class="nav-link" href="{{route('mensajes.recibidos')}}"> 
+                                      <img src="{{asset('images/notificacion_gris.png')}}" width="40" height="40">
+                                  </a>
+                                @else
+                                  <a class="nav-link" href="{{route('mensajes.recibidos')}}"> 
+                                      <img src="{{asset('images/notificacion_amarillo.png')}}" width="40" height="40">
+                                  </a>
+                                @endif
+                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="{{route('users.personal_edit')}}"> 
-                                    <img src="{{asset('images/configuracion.png')}}" class="navbar-toggler-icon">
+                                    <img src="{{asset('images/configuracion.png')}}" width="40" height="40">
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
                                 
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{asset('images/default-user.png')}}" class="navbar-toggler-icon mr-2">{{ Auth::user()->name }} <span class="caret"></span>
+                                    <img src="{{asset('images/default-user.png')}}" width="40" height="40" class="mr-3">{{ Auth::user()->username }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -93,21 +110,34 @@
                     </div>
                  </div>
                  <div class="card">
-                    <div class="card-header text-white" id="headingOne">
+                    @can('busquedas.index')
+                      <div class="card-header  id="headingOne">
+                        <h5 class="mb-0">
+                          <a href="{{route('busquedas.index')}}" class="btn btn-link text-white"><i class="fa fa-home"></i> Busquedas</a>
+                        </h5>
+                      </div>
+                    @endcan
+                  </div>
+                  @if($usuario->estado->nombre == 'CNB')
+                  <div class="card">
+                    <div class="card-header text-white" id="headingSeven">
                       <h5 class="mb-0">
-                        <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                          <i class="fa fa-search"></i> Busqueda
+                        <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseOne">
+                          <i class="fa fa-search"></i> Mensajes Enviados
                         </button>
                       </h5>
                     </div>
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
                         <ul class="nav flex-column m-0">
+                            @can('busquedas.index')
                             <li class="nav-item">
-                              <a class="nav-link pl-5" href="{{route('busquedas.index')}}">Lista de busquedas</a>
+                              <a class="nav-link pl-5" href="{{route('mensajes.index')}}">Mensajes</a>
                             </li>
+                            @endcan
                         </ul>           
                     </div>
                   </div>
+                  @endif
                   <div class="card">
                     <div class="card-header text-white" id="headingTwo">
                       <h5 class="mb-0">
@@ -115,13 +145,14 @@
                          <i class="fa fa-user-o"></i> Genotipos
                         </button>
                       </h5>
-                    </div>
+                    </div>                    
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <ul class="nav flex-column m-0">
-
+                            @can('perfiles_geneticos.create')
                             <li class="nav-item">
                               <a class="nav-link pl-5" href="{{route('perfiles_geneticos.create')}}">Captura Manual</a>
                             </li>
+                            @endcan
                             @can('perfiles_geneticos.index')
                             <li class="nav-item">
                               <a class="nav-link pl-5" href="{{route('perfiles_geneticos.index')}}">Lista de Genotipos</a>
@@ -130,7 +161,7 @@
                             @can('perfiles_geneticos.revision')
                             <li class="nav-item">
                               <a class="nav-link pl-5" href="{{route('perfiles_geneticos.revision')}}">Perfiles para revision <b class=" border p-1 bg-warning rounded disabled">(
-                                <?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
+                                
 
                                 @if($usuario->estado->nombre == 'CNB')
                                   {{App\PerfilGenetico::where('requiere_revision','=',1)->where('es_perfil_repetido','=',0)->where('desestimado','=',0)->count()}} )
@@ -151,6 +182,7 @@
                                 </b></a>
                             </li>
                             @endcan
+                            @can('perfiles_geneticos.index')
                             <li class="nav-item">
                               <a class="nav-link pl-5" href="{{route('perfiles_geneticos.desestimados')}}">Perfiles Desestimados <b class=" border p-1 bg-warning rounded disabled ml-1">(
                                <?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
@@ -161,6 +193,7 @@
                                 @endif
                                 </b></a>
                             </li>
+                            @endcan
                         </ul>  
                     </div>
                   </div>
@@ -235,12 +268,11 @@
                     </div>
                     <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
                         <ul class="nav flex-column m-0">
+                          @can('exportaciones.index')  
                             <li class="nav-item">
-                              <a class="nav-link pl-5" href="#">Nueva exportación</a>
+                              <a class="nav-link pl-5" href="{{route('exportaciones.index')}}">Exportar genotipos</a>
                             </li>
-                            <li class="nav-item">
-                              <a class="nav-link pl-5" href="#">Lista de exportaciones</a>
-                            </li>
+                          @endcan
                         </ul>
                     </div>
                   </div>
@@ -265,6 +297,11 @@
                               <a class="nav-link pl-5" href="{{route('roles.index')}}">Roles</a>
                             </li>
                             @endcan
+                            @can('logs.index')
+                            <li class="nav-item">
+                              <a class="nav-link pl-5" href="{{route('logs.index')}}">Logs</a>
+                            </li>
+                            @endcan
                         </ul>
                     </div>
                   </div>
@@ -279,6 +316,6 @@
     </div>
     <!--<footer class="text-center bg-dark text-muted p-3"> Siscon Systems S.A. de C.V. 2018</footer>-->
     <!-- Script Boostrap -->    
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <script src="{{asset('js/bootstrap/bootstrap.min.js')}}"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@ class PermissionsTableSeeder extends Seeder
     
     public function run()
     {
-    	/* User Permissions. No se incluye la creacion ya que solo con el paquete auth se podran logear*/
+    	/* User: solo ha habilitado la creacion de perfiles desde la sesion de CNB como administrador*/
         Permission::create([
         	'name' => 'Navegar usuarios',
         	'slug' => 'users.index',
@@ -24,6 +24,11 @@ class PermissionsTableSeeder extends Seeder
         	'name' => 'Ver detalle de un usuario',
         	'slug' => 'users.show',
         	'description' => 'Ver en detalle cada usuario del sistema'
+        ]);
+        Permission::create([
+            'name' => 'Creacion de usuarios',
+            'slug' => 'users.create',
+            'description' => 'Crear usuarios en el sistema'
         ]);
         Permission::create([
         	'name' => 'Edicion de usuarios',
@@ -36,6 +41,7 @@ class PermissionsTableSeeder extends Seeder
         	'description' => 'Eliminar un usuario del sistema'
         ]);
 
+        
         /* User Roles*/
         Permission::create([
         	'name' => 'Navegar roles',
@@ -240,14 +246,62 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Ver en detalle cada busqueda del sistema'
         ]);
         Permission::create([
-            'name' => 'Creacion de busquedas',
+            'name' => 'Creacion de busquedas individuales',
             'slug' => 'busquedas.store',
-            'description' => 'Crear busquedas en el sistema'
+            'description' => 'Crear busquedas de un perfil en el sistema'
         ]);
+        Permission::create([
+            'name' => 'Creacion de busquedas grupales',
+            'slug' => 'busquedas.store2',
+            'description' => 'Crear busquedas de multiples perfiles en el sistema'
+        ]);
+
         Permission::create([
             'name' => 'Eliminar busquedas',
             'slug' => 'busquedas.destroy',
             'description' => 'Eliminar un perfil genetico del sistema'
         ]);
+
+        // Mensajes
+        
+        Permission::create([
+            'name' => 'Navegar mensajes',
+            'slug' => 'mensajes.index',
+            'description' => 'Lista y navega todas las mensajes del sistema'
+        ]);
+
+        Permission::create([
+            'name' => 'Ver detalle de un mensaje',
+            'slug' => 'mensajes.show',
+            'description' => 'Ver en detalle cada mensaje del sistema'
+        ]);
+
+        Permission::create([
+            'name' => 'Borrar un mensaje',
+            'slug' => 'mensajes.destroy',
+            'description' => 'Borrar mensajes recibidos'
+        ]);
+
+        Permission::create([
+            'name' => 'Borrar mensajes enviados',
+            'slug' => 'mensajes.destroy2',
+            'description' => 'Borrar mensajes enviados'
+        ]);
+
+        /* Exportaciones*/
+        Permission::create([
+            'name' => 'Realizar Exportaciones',
+            'slug' => 'exportaciones.index',
+            'description' => 'Realiza exportaciones de los perfiles de la base de datos'
+        ]);
+
+
+        /* Logs*/
+        Permission::create([
+            'name' => 'Revisar las actividades realizadas en la aplicacion',
+            'slug' => 'logs.index',
+            'description' => 'Observar como se han modificado los registros'
+        ]);
+
     }
 }

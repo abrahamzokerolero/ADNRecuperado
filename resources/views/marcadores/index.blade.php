@@ -6,10 +6,11 @@
 
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
 
+
 @section('content')
-	<?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
+	<?php use Carbon\Carbon; $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
 	<div class="card-block mt-3">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 		<div class="container">
 			<div class="card-title p-3 card-header">
 				<img src="{{asset('images/marcadores.png')}}" alt="" width="100" height="90" class=""><span class="h4 ml-3 font-weight-bold"> Lista de Marcadores </span>
@@ -24,20 +25,32 @@
 				</div>
 			</div>
 			
-			<div class="collapse float-left mt-3 w-100 mb-2" id="collapseMarcador">
-			  <div class="card">
-			  	{!! Form::open(['route' => 'marcadores.store', 'method'=> 'POST' ]) !!}
-				<div class="p-3">
-						<div class="form-group">
-							{!! Form::label('nombre' , 'Nombre')!!}
-							{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un marcador' , 'required'])!!}
-						</div>
-						<div class="form-group">
-							{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2']) !!}
-						</div>
+			<div class=" row">
+				<div class="collapse float-left mt-3 w-100 mb-2" id="collapseMarcador">
+				  <div class="card">
+				  	{!! Form::open(['route' => 'marcadores.store', 'method'=> 'POST' ]) !!}
+					<div class="p-3">
+							<div class="card-header bg-info text-white mb-2">
+								Agregar Marcador
+							</div>
+							<div class="container">
+								<div class="form-group">
+									{!! Form::label('nombre' , 'Nombre')!!}
+									{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese un marcador' , 'required'])!!}
+									<select name="id_tipo_de_marcador" class="form-control mt-3">
+										@foreach($tipos_de_marcadores as $tipo_de_marcador)
+											<option value="{{$tipo_de_marcador->id}}">{{$tipo_de_marcador->nombre}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="form-group">
+									{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2 float-right mb-2']) !!}
+								</div>
+							</div>
+					</div>
+					{!! Form::close() !!}
+				  </div>
 				</div>
-				{!! Form::close() !!}
-			  </div>
 			</div>
 
 			<table id="myTable" class="table mt-3">
@@ -56,7 +69,7 @@
 							<td>{{$marcador->tipo_de_marcador->nombre}}</td>
 							<td>{{$marcador->usuario_registro->name}}</td>
 							<td>{{$marcador->usuario_edito->name}}</td>
-							<td>{{$marcador->created_at}}</td>
+							<td>{{Carbon::parse($marcador->created_at)->format('d/m/Y')}}</td>
 							<td>
 								@if($usuario->estado->nombre == 'CNB')
 									@can('marcadores.destroy')
@@ -76,8 +89,8 @@
 					@endforeach
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  $('#myTable').DataTable({

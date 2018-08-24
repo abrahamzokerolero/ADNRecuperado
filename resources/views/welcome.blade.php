@@ -18,8 +18,74 @@
 
 @section('content')
     @guest
-        <div class="container mt-5 mb-5 text-center pt-5">
-            <img src="{{asset('images/adn-logo.png')}}" class="p-2 mt-5 pt-5" alt="" width="750" height="350">
+        <div class="container text-center">
+            <img src="{{asset('images/adn-logo.png')}}" class="p-2 mt-5 pt-5" alt="" width="460" height="240">
+            {{-- <div class="container form-auth"> --}}
+            <div>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">{{ __('Acceder al sistema') }}</div>
+
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('login') }}">
+                                    @csrf
+
+                                    <div class="form-group row">
+                                        <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Correo electrónico') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+
+                                            @if ($errors->has('email'))
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('email') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+                                            @if ($errors->has('password'))
+                                                <span class="invalid-feedback">
+                                                    <strong>{{ $errors->first('password') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-md-6 offset-md-4">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Recordar mi contraseña') }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-8 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Acceder') }}
+                                            </button>
+
+                                            {{-- <a class="btn btn-link" href="{{ route('password.request') }}">
+                                                {{ __('¿Olvidaste tu contraseña?') }}
+                                            </a> --}}
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     @else
         @if(!Illuminate\Support\Facades\Auth::guest())
@@ -33,33 +99,51 @@
                         <span class="mr-3 h2 m-0 p-0">{{$numero_perfiles}}</span>
                         <p class="mr-3 mt-0 p-0">Genotipos Registrados</p>
                     </div>
+                    @can('perfiles_geneticos.index')
                     <div class="card-footer verde float-left pl-4 pt-2 pb-0">
                         <p><a href="{{route('perfiles_geneticos.index')}}">MAS INFORMACION</a></p>
                     </div>
+                    @else
+                    <div class="card-footer verde float-left pl-4 pt-2 pb-0">
+                        <p><a href="">MAS INFORMACION</a></p>
+                    </div>
+                    @endcan
                 </div>
                 <div class="card accesos_rapidos text-muted">
                     <div class="acceso_rapido_contenido busquedas_gris d-flex flex-column align-items-end">
                         <span class="mr-3 h2 m-0 p-0">0</span>
                         <p class="mr-3 mt-0 p-0 ">Busquedas realizadas</p>
                     </div>
+                    @can('busquedas.index')
+                    <div class="card-footer blanco float-left pl-4 pt-2 pb-0">
+                        <p><a href="{{route('busquedas.index')}}" class="text-muted">MAS INFORMACION</a></p>
+                    </div>
+                    @else
                     <div class="card-footer blanco float-left pl-4 pt-2 pb-0">
                         <p><a href="" class="text-muted">MAS INFORMACION</a></p>
                     </div>
+                    @endcan
                 </div>
                 <div class="card accesos_rapidos">
                     <div class="acceso_rapido_contenido fuentes_gris d-flex flex-column align-items-end">
                         <span class="mr-3 h2 m-0 p-0">{{$numero_fuentes}}</span>
                         <p class="mr-3 mt-0 p-0">Fuentes Registradas</p>
                     </div>
+                    @can('fuentes.index')
                     <div class="card-footer rojo float-left pl-4 pt-2 pb-0">
                         <p><a href="{{route('fuentes.index')}}">MAS INFORMACION</a></p>
                     </div>
+                    @else
+                    <div class="card-footer rojo float-left pl-4 pt-2 pb-0">
+                        <p><a href="">MAS INFORMACION</a></p>
+                    </div>
+                    @endcan
                 </div>
                 <div class="card accesos_rapidos">
                     <div class="acceso_rapido_contenido usuarios_gris d-flex flex-column align-items-end">
                         <span class="mr-3 h2 m-0 p-0">{{$numero_usuarios}}</span>
                         <p class="mr-3 mt-0 p-0">Usuarios registrados</p>
-                    </div>
+                    </div>                    
                     <div class="card-footer float-left verde pl-4 pt-2 pb-0">
                         <?php $usuario = App\User::find(Illuminate\Support\Facades\Auth::id());?>
                         @if($usuario->estado->nombre == 'CNB')
@@ -76,9 +160,15 @@
                         <span class="mr-3 h2 m-0 p-0">{{$numero_importaciones}}</span>
                         <p class="mr-3 mt-0 p-0">Importaciones Registradas</p>
                     </div>
+                    @can('importaciones_perfiles.index')
                     <div class="card-footer float-left pl-4 pt-2 pb-0">
                         <p><a href="{{route('importaciones_perfiles.index')}}" class="text-muted">MAS INFORMACION</a></p>
                     </div>
+                    @else
+                    <div class="card-footer float-left pl-4 pt-2 pb-0">
+                        <p><a href="" class="text-muted">MAS INFORMACION</a></p>
+                    </div>
+                    @endcan
                 </div>
                 <div class="card accesos_rapidos">
                     <div class="acceso_rapido_contenido exportaciones_gris d-flex flex-column align-items-end">
@@ -94,18 +184,30 @@
                         <span class="mr-3 h2 m-0 p-0">{{$numero_categorias}}</span>
                         <p class="mr-3 mt-0 p-0">Grupos Registrados</p>
                     </div>
+                    @can('categorias.index')
                     <div class="card-footer verde  float-left pl-4 pt-2 pb-0">
                         <p><a href="{{route('categorias.index')}}">MAS INFORMACION</a></p>
                     </div>
+                    @else
+                    <div class="card-footer verde  float-left pl-4 pt-2 pb-0">
+                        <p><a href="">MAS INFORMACION</a></p>
+                    </div>
+                    @endcan
                 </div>
                 <div class="card accesos_rapidos text-muted">
                     <div class="acceso_rapido_contenido etiquetas_gris d-flex flex-column align-items-end">
                         <span class="mr-3 h2 m-0 p-0">{{$numero_etiquetas}}</span>
                         <p class="mr-3 mt-0 p-0">Etiquetas registrados</p>
                     </div>
+                    @can('etiquetas.index')
                     <div class="card-footer float-left pl-4 pt-2 pb-0">
                         <p><a href="{{route('etiquetas.index')}}" class="text-muted">MAS INFORMACION</a></p>
                     </div>
+                    @else
+                    <div class="card-footer float-left pl-4 pt-2 pb-0">
+                        <p><a href="" class="text-muted">MAS INFORMACION</a></p>
+                    </div>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -123,6 +225,7 @@
             </select>
             {!! Form::close() !!}
         </div>
+        @can('perfiles_geneticos.index')
         <div class=" d-flex justify-content-center mt-3">
              <div id="chart_div" style="width:1000; height:500"></div>
         </div>
@@ -130,10 +233,7 @@
         <div class=" d-flex justify-content-center mt-3">
              <div id="chart_div2" style="width:1000; height:500"></div>
         </div>
-        
-        <div class=" d-flex justify-content-center mt-3">
-             <div id="chart_div3" style="width:1000; height:500"></div>
-        </div>
+        @endcan
 
         <script type="text/javascript">
             
@@ -183,17 +283,13 @@
                             };
 
                             // Instantiate and draw our chart, passing in some options. ColumnChart PieChart
-                            chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                            chart = new google.visualization.BarChart(document.getElementById('chart_div'));
                             google.visualization.events.addListener(chart, 'select', selectHandler);
                             chart.draw(data, options);
 
                             chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
                             google.visualization.events.addListener(chart2, 'select', selectHandler2);
                             chart2.draw(data, options);
-
-                            chart3 = new google.visualization.BarChart(document.getElementById('chart_div3'));
-                            google.visualization.events.addListener(chart3, 'select', selectHandler3);
-                            chart3.draw(data, options);
                           }
 
                           function selectHandler() {
@@ -207,16 +303,9 @@
                             var value = data.getValue(selectedItem.row, 0);
                             window.location.replace("perfiles/" + value + "/estadisticas");
                           }
-
-                          function selectHandler3() {
-                            var selectedItem = chart3.getSelection()[0];
-                            var value = data.getValue(selectedItem.row, 0);
-                            window.location.replace("perfiles/" + value + "/estadisticas");
-                          }
-
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            alert('hubo un error');
+                            alert('Ocurrio un error, intente nuevamente');
                         }
                     });
                 });

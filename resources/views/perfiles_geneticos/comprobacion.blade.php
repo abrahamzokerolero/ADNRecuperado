@@ -7,8 +7,7 @@
 @section('script')
     <!-- Scripts -->
     <link rel="stylesheet" href="{{asset('css/choices.min.css?version=3.0.4')}}">
-  	<script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script>
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
 @endsection
 
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
@@ -71,11 +70,12 @@
 						<div class="card-body text-justify">
 							<ul class="nav nav-tabs" id="myTab" role="tablist">
 							  <li class="nav-item">
-							    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a>
+							    {{-- <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">DATOS DE CADAVERES O RESTOS OSEOS</a> --}}
+							    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">METADATOS</a>
 							  </li>
-							  <li class="nav-item">
-							    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">DATOS DE FAMILIARES</a>
-							  </li>
+							 	{{--   <li class="nav-item">
+								    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">DATOS DE FAMILIARES</a>
+								</li> --}}
 							</ul>
 							<div class="tab-content" id="myTabContent">
 							  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -100,9 +100,37 @@
 								      {{Form::text('fosa', null , ['class' => 'form-control'])}}
 								    </div>
 								  </div>
-								  <hr>
+								  <div class="row pl-3 pr-3 pt-3">
+								  	<div class="col">
+								      {{Form::label('nombre_del_donante', 'Nombre del donante')}}
+								      {{Form::text('nombre_del_donante', null , ['class' => 'form-control'])}}
+								   </div>
+								   <div class="col">
+								      {{Form::label('curp_del_familiar', 'CURP del familiar')}}
+								      {{Form::text('curp_del_familiar', null , ['class' => 'form-control curp'])}}
+								   </div>	
+								  </div>
+								  <div class="row pl-3 pr-3 pt-3">
+								   		<div class="col">
+									      {{Form::label('nombre_del_desaparecido', 'Nombre del desaparecido')}}
+									      {{Form::text('nombre_del_desaparecido', null , ['class' => 'form-control'])}}
+									    </div>
+									    <div class="col">
+									      {{Form::label('curp_del_desaparecido', 'CURP del desaparecido')}}
+									      {{Form::text('curp_del_desaparecido', null , ['class' => 'form-control curp'])}}
+									    </div>
+									</div>
+									<div class="row pl-3 pr-3 pt-3">
+									    <div class="col">
+									      {{Form::label('parentesco_con_el_desaparecido', 'Parentesco con el desaparecido')}}
+									      {{Form::text('parentesco_con_el_desaparecido', null , ['class' => 'form-control'])}}
+									    </div>
+									</div>
+								 	<hr>								  							
 							  </div>
-							  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+							    	   
+							  {{-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 							  	<div class="card-header text-center text-white bg-danger mt-3">Datos de Familiares</div>
 								  <div class="row pl-3 pr-3 pt-3">
 								   <div class="col">
@@ -113,7 +141,7 @@
 								      {{Form::label('curp_del_familiar', 'CURP del familiar')}}
 								      {{Form::text('curp_del_familiar', null , ['class' => 'form-control curp'])}}
 								   </div>
-								   </div>
+								  </div>
 								   <div class="row pl-3 pr-3 pt-3">
 								   		<div class="col">
 									      {{Form::label('nombre_del_desaparecido', 'Nombre del desaparecido')}}
@@ -131,7 +159,7 @@
 									    </div>
 									</div>
 								 	<hr>
-							  </div>
+							  </div> --}}
 							  <div class="row pl-3 pr-3 pt-3">
 							    <div class="col">
 							      {{Form::label('clave_de_muestra', 'Clave de muestra')}}
@@ -290,58 +318,62 @@
 
 							@endif
 
-							<div class="">
+							<div class="row">
 								<!--formulario para cateorias colapsable-->
 								
-								<div class="collapse float-left mb-2 ml-3" id="collapseCategoria">
-								    <div class="card-header bg-secondary text-white">
-								  		Crear nueva categoria
-								  	</div>
-								  <div class="card">
-								  	{!! Form::open(['route' => 'importaciones_perfiles.crear_categoria', 'method'=> 'POST' ]) !!}
-									<div class="p-3">
-											<div class="form-group">
-												{!! Form::label('nombre' , 'Nombre')!!}
-												{!! Form::text('nombre' , null , [ 'class' => 'form-control input_categoria', 'placeholder'=> 'Ingrese una categoria' , 'required'])!!}
-											</div>
-											<div class="form-group">
-												{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2 GuardarCategoria']) !!}
-											</div>
+								<div class="col">
+									<div class="collapse  mb-2 ml-3" id="collapseCategoria">
+									    <div class="card-header bg-secondary text-white">
+									  		Crear nueva categoria
+									  	</div>
+									  <div class="card">
+									  	{!! Form::open(['route' => 'importaciones_perfiles.crear_categoria', 'method'=> 'POST' ]) !!}
+										<div class="p-3">
+												<div class="form-group">
+													{!! Form::label('nombre' , 'Nombre')!!}
+													{!! Form::text('nombre' , null , [ 'class' => 'form-control input_categoria', 'placeholder'=> 'Ingrese una categoria' , 'required'])!!}
+												</div>
+												<div class="form-group">
+													{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2 GuardarCategoria']) !!}
+												</div>
+										</div>
+										{!! Form::close() !!}
+									  </div>
 									</div>
-									{!! Form::close() !!}
-								  </div>
 								</div>
 								
 								<!--Formulario para etiquetas colapsable-->
 								
-								<div class="collapse w-50 float-right mb-2 mr-3" id="collapseEtiquetas">
-								  	<div class="card">
-								  		<div class="card-header bg-success text-white">
-									  		Crear etiquetas
-									  	</div>
-								  		{!! Form::open(['route' => 'importaciones_perfiles.crear_etiquetas', 'method'=> 'POST' ]) !!}
-											<div class="p-3">
-												<div class="form-group">
-													<p class="text-info ">Pueden ser asignadas multiples etiquetas separandolas por una coma</p>
-													{!! Form::label('nombre' , 'Nombre')!!}
-													{!! Form::text('nombre' , null , [ 'class' => 'form-control EtiquetasAjax', 'placeholder'=> 'Ejemplo 1, Ejemplo 2, Ejemplo 3' , 'required'])!!}
-													<label for="categoria_id" class="mt-2">Categoria</label>
-													<select name="categoria_id" class="form-control select_categoria" required>
-													  <option disabled selected>Seleccione una categoria</option>
-													  @foreach($categorias as $categoria)
-													  	<option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
-													  @endforeach
-													</select>
+								<div class="col">
+									<div class="collapse mb-2 mr-3" id="collapseEtiquetas">
+									  	<div class="card">
+									  		<div class="card-header bg-success text-white">
+										  		Crear etiquetas
+										  	</div>
+									  		{!! Form::open(['route' => 'importaciones_perfiles.crear_etiquetas', 'method'=> 'POST' ]) !!}
+												<div class="p-3">
+													<div class="form-group">
+														<p class="text-info ">Pueden ser asignadas multiples etiquetas separandolas por una coma</p>
+														{!! Form::label('nombre' , 'Nombre')!!}
+														{!! Form::text('nombre' , null , [ 'class' => 'form-control EtiquetasAjax', 'placeholder'=> 'Ejemplo 1, Ejemplo 2, Ejemplo 3' , 'required'])!!}
+														<label for="categoria_id" class="mt-2">Categoria</label>
+														<select name="categoria_id" class="form-control select_categoria" required>
+														  <option disabled selected>Seleccione una categoria</option>
+														  @foreach($categorias as $categoria)
+														  	<option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
+														  @endforeach
+														</select>
+													</div>
+													
+													<div class="form-group">
+														{!! Form::submit('Guardar', ['class' => 'btn btn-primary mr-3 GuardarEtiquetas']) !!}
+														<img src="{{asset('images/carga.gif')}}" width="120" height="120" id="carga">
+													</div>
 												</div>
-												
-												<div class="form-group">
-													{!! Form::submit('Guardar', ['class' => 'btn btn-primary mr-3 GuardarEtiquetas']) !!}
-													<img src="{{asset('images/carga.gif')}}" width="120" height="120" id="carga">
-												</div>
-											</div>
-										{!! Form::close() !!}
+											{!! Form::close() !!}
+										</div>
 									</div>
-							</div>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -391,6 +423,9 @@
 
 	    $(".GuardarEtiquetas").click(function(e){
 	        e.preventDefault();
+
+	      	var etiquetas_seleccionadas = $('#etiquetas').val();
+	     
 	        $('.GuardarEtiquetas').text("Espere un momento");
             $('.GuardarEtiquetas').addClass('disabled');
             $('#carga').fadeIn();
@@ -401,7 +436,7 @@
 	        if(categoria != null && etiquetas != "" ){
 	            $('.mensaje_de_error2').fadeOut();
 	            $.post(url, form.serialize(), function(result){
-	            	console.log(result.categorias);
+	            	// console.log(result.categorias);
 	                multipleDefault.destroy();
 	                for(i in result.categorias){
 	                	//result.categorias[i].nombre       Nombre de las categorias
@@ -413,24 +448,15 @@
 	                	}
 	                }
 
-	                multipleDefault = new Choices(document.getElementById('etiquetas'));
-
-	                multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-					placeholder: true,
-					placeholderValue: 'Pick an Strokes record',
-					maxItemCount: 5,
-					}).ajax(function(callback) {
-					fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-					  .then(function(response) {
-					    response.json().then(function(data) {
-					      callback(data.releases, 'title', 'title');
-					    });
-					  })
-					  .catch(function(error) {
-					    console.error(error);
-					  });
-					});
+	                multipleDefault = new Choices(document.getElementById('etiquetas'), {
+					    searchResultLimit: 100,
+					    resetScrollPosition: false,
+				    });
 	                
+					for( etiqueta_individual in etiquetas_seleccionadas){
+		            	multipleDefault.setValueByChoice(etiquetas_seleccionadas[etiqueta_individual]);
+		            }
+
 	                $('.mensaje_de_error2').text("Etiqueta(s) agregada(s) exitosamente");
 	                $('.mensaje_de_error2').removeClass('bg-warning');
 	                $('.mensaje_de_error2').addClass('bg-success text-white');
@@ -439,6 +465,7 @@
 	                $('.GuardarEtiquetas').text("Guardar");
 		            $('.GuardarEtiquetas').removeClass('disabled');
 		            $('#carga').fadeOut();
+
 
 	            }).fail(function(jqXHR, textStatus, errorThrown){
 	                $('.mensaje_de_error2').addClass('bg-warning');
@@ -472,31 +499,13 @@
 	        }
 	    });
 
-	    var multipleDefault = new Choices(document.getElementById('etiquetas'));
-
-		var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-		placeholder: true,
-		placeholderValue: 'Pick an Strokes record',
-		maxItemCount: 5,
-		}).ajax(function(callback) {
-		fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-		  .then(function(response) {
-		    response.json().then(function(data) {
-		      callback(data.releases, 'title', 'title');
-		    });
-		  })
-		  .catch(function(error) {
-		    console.error(error);
-		  });
-		});
+	    var multipleDefault = new Choices(document.getElementById('etiquetas'), {
+		    searchResultLimit: 100,
+		    resetScrollPosition: false,
+	    });
 
     });
   </script>
-
-  <script
-	src="https://code.jquery.com/jquery-3.3.1.min.js"
-	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-	crossorigin="anonymous"></script>
 
     @foreach($requestAnterior->all() as $marcador  => $alelo)
 		@if($marcador <> '_token')
@@ -531,4 +540,5 @@
 			});
 		});
 	</script>
+	<script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script>
 @endsection

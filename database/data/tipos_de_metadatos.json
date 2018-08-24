@@ -1,0 +1,22 @@
+[
+	{"nombre": "fecha_de_hallazgo"},
+	{"nombre": "lugar"},
+	{"nombre": "paraje"},
+	{"nombre": "fosa"},
+	{"nombre": "nombre_del_donante"},
+	{"nombre": "curp_del_familiar"},
+	{"nombre": "nombre_del_desaparecido"},
+	{"nombre": "curp_del_desaparecido"},
+	{"nombre": "parentesco_con_el_desaparecido"},
+	{"nombre": "descripcion_de_la_muestra"},
+	{"nombre": "observaciones"},
+	{"nombre": "talla"},
+	{"nombre": "peso"},
+	{"nombre": "s_particulares_o_malformaciones"},
+	{"nombre": "tatuaje"},
+	{"nombre": "sexo"},
+	{"nombre": "ci_nuc_ap"},
+	{"nombre": "fecha_desaparicion"},
+	{"nombre": "lugar_de_desaparicion"},
+	{"nombre": "no_de_caso_relacionado"}
+]

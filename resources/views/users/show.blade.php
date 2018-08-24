@@ -24,12 +24,25 @@
 		<div class="card-info p-3">
 			{!! Form::label('nombre' , 'Nombre')!!}
 			{!! Form::text('nombre' , $user->name , [ 'class' => 'form-control', 'readonly'])!!}
+			
+			{!! Form::label('apellido_paterno' , 'Apellido paterno')!!}
+			{!! Form::text('apellido_paterno' , $user->apellido_paterno , [ 'class' => 'form-control', 'readonly'])!!}
+
+			{!! Form::label('apellido_materno' , 'Apellido materno')!!}
+			{!! Form::text('apellido_materno' , $user->apellido_materno , [ 'class' => 'form-control', 'readonly'])!!}
+
+			{!! Form::label('username' , 'Nombre de Usuario')!!}
+			{!! Form::text('username' , $user->username , [ 'class' => 'form-control', 'readonly'])!!}
+
+			{!! Form::label('direccion' , 'Direccion del usuario')!!}
+			{!! Form::text('direccion' , $user->direccion , [ 'class' => 'form-control', 'readonly'])!!}
+
 			{!! Form::label('email' , 'Correo')!!}
 			{!! Form::text('email' , $user->email , [ 'class' => 'form-control', 'readonly'])!!}
 		
-			{!! Form::label('username' , 'Nombre de Usuario')!!}
-			{!! Form::text('username' , $user->username , [ 'class' => 'form-control', 'readonly'])!!}
-		
+			{!! Form::label('estado' , 'Estado al que pertenece')!!}
+			{!! Form::text('estado' , $user->estado->nombre , [ 'class' => 'form-control', 'readonly'])!!}
+
 			{!! Form::label('created_at' , 'Fecha de registro')!!}
 			{!! Form::text('created_at' , $user->created_at , [ 'class' => 'form-control', 'readonly'])!!}
 		</div>

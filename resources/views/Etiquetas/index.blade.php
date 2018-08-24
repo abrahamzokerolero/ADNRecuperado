@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 	<div class="container">
 		<table id="myTable" class="table">
 			<thead class="card-header bg-success text-white">
@@ -33,13 +33,13 @@
 						<td class="text-right">
 							@if($usuario->estado->nombre == 'CNB')
 								@can('etiquetas.destroy')
-								<a href="{{ route('etiquetas.destroy', $etiqueta->id)}}"  onclick="return confirm('Desea eliminar la etiqueta seleccionada?' )" class="btn btn-danger">
+								<a href="{{ route('etiquetas.destroy', $etiqueta->id)}}"  onclick="return confirm('Desea eliminar la etiqueta seleccionada?' )" class="btn btn-danger btn-sm">
 									<i class="fa fa-times"></i>
 								</a> 
 								@endcan
 							@endif
 							@can('etiquetas.edit')
-							<a href="{{ route('etiquetas.edit', $etiqueta->id)}}" class="btn btn-warning" >
+							<a href="{{ route('etiquetas.edit', $etiqueta->id)}}" class="btn btn-warning btn-sm" >
 								<i class="fa fa-pencil-square-o"></i>
 							</a>
 							@endcan
@@ -48,8 +48,8 @@
 				@endforeach
 			</tbody>
 		</table>
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+		<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+		<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 		<script>
 			$(document).ready(function() {
 			  $('#myTable').DataTable({

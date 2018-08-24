@@ -22,81 +22,87 @@
 		<img src="{{asset('images/etiquetas.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> CATEGORIAS Y ETIQUETAS </span>
 	</div>
 	
-	<div class="card-block">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-
-		<!--Botones colapsables-->
-		@if($usuario->estado->nombre == 'CNB')
-		<div class="d-flex flex-row justify-content-between p-3">
-			@can('categorias.store')
-			<div class="p-2">
-				<button class="btn btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseCategoria" aria-expanded="false" aria-controls="collapseExample">
-					<i class="fa fa-th-large"></i> Agregar categoria
-				</button>
+	<div class="container">
+		<div class="card-block">
+			<!--Botones colapsables-->
+			@if($usuario->estado->nombre == 'CNB')
+			<div class="d-flex flex-row justify-content-between p-3">
+				@can('categorias.store')
+				<div class="p-2">
+					<button class="btn btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseCategoria" aria-expanded="false" aria-controls="collapseExample">
+						<i class="fa fa-th-large"></i> Agregar categoria
+					</button>
+				</div>
+				@endcan
+				@can('etiquetas.store')
+				<div class="p-2">
+					<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseEtiquetas" aria-expanded="false" aria-controls="collapseExample">
+						<i class="fa fa-bookmark"></i> Agregar Etiquetas
+					</button>
+				</div>
+				@endcan
 			</div>
-			@endcan
-			@can('etiquetas.store')
-			<div class="p-2">
-				<button class="btn btn-success" type="button" data-toggle="collapse" data-target="#collapseEtiquetas" aria-expanded="false" aria-controls="collapseExample">
-					<i class="fa fa-bookmark"></i> Agregar Etiquetas
-				</button>
-			</div>
-			@endcan
-		</div>
-		@endif
-		
-		<!--formulario para cateorias colapsable-->
-
-		<div class="collapse float-left mb-2 ml-3" id="collapseCategoria">
-		  <div class="card">
-		  	<div class="card-header bg-secondary text-white">
-		  		Crear nueva categoria
-		  	</div>
-		  	{!! Form::open(['route' => 'categorias.store', 'method'=> 'POST' ]) !!}
-			<div class="p-3">
-					<div class="form-group">
-						{!! Form::label('nombre' , 'Nombre')!!}
-						{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese una categoria' , 'required'])!!}
+			@endif
+			
+			<div class="row">
+				<!--formulario para cateorias colapsable-->
+				
+				<div class="col">
+					<div class="collapse mb-2 ml-3" id="collapseCategoria">
+					  <div class="card">
+					  	<div class="card-header bg-secondary text-white">
+					  		Crear nueva categoria
+					  	</div>
+					  	{!! Form::open(['route' => 'categorias.store', 'method'=> 'POST' ]) !!}
+						<div class="p-3">
+								<div class="form-group">
+									{!! Form::label('nombre' , 'Nombre')!!}
+									{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ingrese una categoria' , 'required'])!!}
+								</div>
+								<div class="form-group">
+									{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2']) !!}
+								</div>
+						</div>
+						{!! Form::close() !!}
+					  </div>
 					</div>
-					<div class="form-group">
-						{!! Form::submit('Guardar', ['class' => 'btn btn-primary mt-2']) !!}
-					</div>
-			</div>
-			{!! Form::close() !!}
-		  </div>
-		</div>
-
-		<!--Formulario para etiquetas colapsable-->
-
-		<div class="collapse w-50 float-right mb-2 mr-3" id="collapseEtiquetas">
-		  	<div class="card">
-		  		<div class="card-header bg-success text-white">
-			  		Crear etiquetas
-			  	</div>
-		  		{!! Form::open(['route' => 'etiquetas.store', 'method'=> 'POST' ]) !!}
-	  				<div class="p-3">
-	  						<div class="form-group">
-	  							<p class="text-info border p-2">Pueden ser asignadas multiples etiquetas separandolas por una coma</p>
-	  							{!! Form::label('nombre' , 'Nombre')!!}
-	  							{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ejemplo 1, Ejemplo 2, Ejemplo 3' , 'required'])!!}
-	  							<label for="categoria_id" class="mt-2">Categoria</label>
+				</div>
+				
+				<!--Formulario para etiquetas colapsable-->
+				
+				<div class="col">
+					<div class="collapse mb-2 mr-3" id="collapseEtiquetas">
+					  	<div class="card">
+					  		<div class="card-header bg-success text-white">
+						  		Crear etiquetas
+						  	</div>
+					  		{!! Form::open(['route' => 'etiquetas.store', 'method'=> 'POST' ]) !!}
+							  				<div class="p-3">
+							  						<div class="form-group">
+							  							<p class="text-info border p-2">Pueden ser asignadas multiples etiquetas separandolas por una coma</p>
+							  							{!! Form::label('nombre' , 'Nombre')!!}
+							  							{!! Form::text('nombre' , null , [ 'class' => 'form-control', 'placeholder'=> 'Ejemplo 1, Ejemplo 2, Ejemplo 3' , 'required'])!!}
+							  							<label for="categoria_id" class="mt-2">Categoria</label>
 								<select name="categoria_id" class="form-control">
 								  <option disabled selected>Seleccione una categoria</option>
 								  @foreach($categorias as $categoria)
 								  	<option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
 								  @endforeach
 								</select>
-	  						</div>
-	  						
-	  						<div class="form-group">
-	  							{!! Form::submit('Guardar', ['class' => 'btn btn-primary mr-3']) !!}
-	  						</div>
-	  				</div>
-	  				{!! Form::close() !!}
+		  						</div>
+		  						
+		  						<div class="form-group">
+		  							{!! Form::submit('Guardar', ['class' => 'btn btn-primary mr-3']) !!}
+		  						</div>
+		  				</div>
+		  				{!! Form::close() !!}
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+	</div>
 		<div class="container">
-			
+			<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 			<table id="myTable" class="table">
 				<thead class="card-header bg-secondary text-white">
 					<td>ID Categoria</td>
@@ -128,8 +134,8 @@
 					@endforeach
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  $('#myTable').DataTable({

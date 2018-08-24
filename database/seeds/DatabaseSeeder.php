@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EstadosTableSeeder::class);
         $this->call(TiposDeBusquedasTableSeeder::class);
         $this->call(EstatusBusquedasTableSeeder::class);
-    }
+        $this->call(TiposDeMetadatosTableSeeder::class);
+    }    
 }

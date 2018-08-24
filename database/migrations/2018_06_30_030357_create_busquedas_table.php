@@ -27,6 +27,9 @@ class CreateBusquedasTable extends Migration
             $table->integer('id_estado')->unsigned()->nullable();
             $table->integer('id_tabla_de_frecuencias')->unsigned()->nullable();
             $table->integer('id_estatus_busqueda')->unsigned()->nullable();
+            $table->boolean('perfiles_en_revision_descartados')->nullable();
+            $table->string('etiquetas_objetivo')->nullable();
+            $table->string('etiquetas_usadas')->nullable();
             $table->date('created_at')->default(date("Y-m-d H:i:s"));
             $table->date('updated_at')->default(date("Y-m-d H:i:s"));
 

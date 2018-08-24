@@ -20,6 +20,17 @@ Route::get('/estadisticas', "PagesController@estadisticas")->name('estadisticas'
 
 Route::middleware(['auth'])->group(function(){
 
+	/* Rutas de Usuarios con Shinobi*/
+	Route::get('users', 'UsersController@index')->name('users.index')->middleware('permission:users.index');	
+	Route::get('users/create', 'UsersController@create')->name('users.create')->middleware('permission:users.create');
+	Route::post('users/store', 'UsersController@store')->name('users.store')->middleware('permission:users.create');
+	Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit')->middleware('permission:users.edit');
+	Route::put('users/{user}','UsersController@update')->name('users.update')->middleware('permission:users.edit');
+	Route::get('users/{user}', 'UsersController@show')->name('users.show')->middleware('permission:users.show');
+	Route::get('users/{user}/destroy', 'UsersController@destroy')->name('users.destroy')->middleware('permission:users.destroy');
+	Route::get('personal/edit', 'UsersController@editar_perfil_personal')->name('users.personal_edit');
+	Route::put('personal/{user}/edit','UsersController@update_perfil_personal')->name('users.personal_update');
+
 	/* Rutas de Roles con Shinobi*/
 	Route::get('roles', 'RolesController@index')->name('roles.index')->middleware('permission:roles.index');
 	Route::get('roles/create', 'RolesController@create')->name('roles.create')->middleware('permission:roles.create');
@@ -28,16 +39,6 @@ Route::middleware(['auth'])->group(function(){
 	Route::put('roles/{role}','RolesController@update')->name('roles.update')->middleware('permission:roles.edit');
 	Route::get('roles/{role}', 'RolesController@show')->name('roles.show')->middleware('permission:roles.show');
 	Route::get('roles/{role}/destroy', 'RolesController@destroy')->name('roles.destroy')->middleware('permission:roles.destroy');
-
-
-	/* Rutas de Usuarios con Shinobi*/
-	Route::get('users', 'UsersController@index')->name('users.index')->middleware('permission:users.index');
-	Route::get('users/{user}/edit', 'UsersController@edit')->name('users.edit')->middleware('permission:users.edit');
-	Route::put('users/{user}','UsersController@update')->name('users.update')->middleware('permission:users.edit');
-	Route::get('users/{user}', 'UsersController@show')->name('users.show')->middleware('permission:users.show');
-	Route::get('users/{user}/destroy', 'UsersController@destroy')->name('users.destroy')->middleware('permission:users.destroy');
-	Route::get('personal/edit', 'UsersController@editar_perfil_personal')->name('users.personal_edit');
-	Route::put('personal/{user}/edit','UsersController@update_perfil_personal')->name('users.personal_update');
 
 	/* Rutas de Categorias con Shinobi*/
 	Route::get('categorias', 'CategoriasController@index')->name('categorias.index')->middleware('permission:categorias.index');
@@ -94,6 +95,10 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('importaciones_perfiles/store', 'ImportacionesPerfilesController@store')->name('importaciones_perfiles.store')->middleware('permission:importaciones_perfiles.create');
 	Route::get('importaciones_perfiles/{importacion_perfil}/edit','ImportacionesPerfilesController@edit')->name('importaciones_perfiles.edit')->middleware('permission:importaciones_perfiles.edit');
 	Route::get('importaciones_perfiles/{importacion_perfil}', 'ImportacionesPerfilesController@show')->name('importaciones_perfiles.show')->middleware('permission:importaciones_perfiles.show');
+	Route::get('importaciones_perfiles/{perfil_genetico}/perfil_genetico', 'ImportacionesPerfilesController@show_perfil')->name('importaciones_perfiles.show_perfil')->middleware('permission:perfiles_geneticos.show');
+	Route::put('importaciones_perfiles/{perfil_genetico}/validar', 'ImportacionesPerfilesController@validar')->name('importaciones_perfiles.validar')->middleware('permission:perfiles_geneticos.edit');
+	Route::get('importaciones_perfiles/{perfil_genetico}/validar_duplicado', 'ImportacionesPerfilesController@validar_duplicado')->name('importaciones_perfiles.validar_duplicado')->middleware('permission:perfiles_geneticos.edit');
+	Route::put('importaciones_perfiles/{perfil_genetico}/guardar_validacion_de_duplicado', 'ImportacionesPerfilesController@guardar_validacion_de_duplicado')->name('importaciones_perfiles.guardar_validacion_de_duplicado')->middleware('permission:perfiles_geneticos.edit');
 	Route::get('importaciones_perfiles/{importacion_perfil}/destroy', 'ImportacionesPerfilesController@destroy')->name('importaciones_perfiles.destroy')->middleware('permission:importaciones_perfiles.destroy');
 
 	// Rutas Ajax	
@@ -112,8 +117,8 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('perfiles_geneticos/{importacion_perfil}/destroy', 'PerfilesGeneticosController@destroy')->name('perfiles_geneticos.destroy')->middleware('permission:perfiles_geneticos.destroy');
 	
 	// En revision
-	Route::get('perfiles/revision', 'PerfilesGeneticosController@revision')->name('perfiles_geneticos.revision');
-	Route::put('perfiles/{perfil_genetico}/validar', 'PerfilesGeneticosController@validar')->name('perfiles_geneticos.validar');
+	Route::get('perfiles/revision', 'PerfilesGeneticosController@revision')->name('perfiles_geneticos.revision')->middleware('permission:perfiles_geneticos.index');
+	Route::put('perfiles/{perfil_genetico}/validar', 'PerfilesGeneticosController@validar')->name('perfiles_geneticos.validar')->middleware('permission:perfiles_geneticos.index');
 
 	Route::post('perfiles/comprobacion', 'PerfilesGeneticosController@comprobacion')->name('perfiles_geneticos.comprobacion');
 
@@ -137,16 +142,37 @@ Route::middleware(['auth'])->group(function(){
 	Route::post('perfiles/filtro_combinado2', 'PerfilesGeneticosController@filtro_combinado2')->name('perfiles_geneticos.filtro_combinado2');
 	Route::post('perfiles/filtro_combinado3', 'PerfilesGeneticosController@filtro_combinado3')->name('perfiles_geneticos.filtro_combinado3');
 	Route::get('perfiles/restablecer', 'PerfilesGeneticosController@restablecer')->name('perfiles_geneticos.restablecer');
+	Route::post('perfiles/etiquetar', 'PerfilesGeneticosController@etiquetar')->name('perfiles_geneticos.etiquetar');
+	Route::post('perfiles/desetiquetar', 'PerfilesGeneticosController@desetiquetar')->name('perfiles_geneticos.desetiquetar');
 
 
 	/* Rutas de Busquedas*/
 	Route::get('busquedas', 'BusquedasController@index')->name('busquedas.index')->middleware('permission:busquedas.index');
 	Route::get('busquedas/create', 'BusquedasController@create')->name('busquedas.create')->middleware('permission:busquedas.create');
 	Route::post('busquedas/store', 'BusquedasController@store')->name('busquedas.store')->middleware('permission:busquedas.store');
-	Route::post('busquedas/store2', 'BusquedasController@store2')->name('busquedas.store2');
+	Route::post('busquedas/store2', 'BusquedasController@store2')->name('busquedas.store2')->middleware('permission:busquedas.store2');
 	Route::get('busquedas/{importacion_perfil}', 'BusquedasController@show')->name('busquedas.show')->middleware('permission:busquedas.show');
 	Route::get('busquedas/{importacion_perfil}/destroy', 'BusquedasController@destroy')->name('busquedas.destroy')->middleware('permission:busquedas.destroy');
 	Route::get('ventana/busquedas', 'BusquedasController@ventana')->name('busquedas.ventana');
+	Route::post('busquedas/{resultado}/mensaje', 'BusquedasController@mensaje')->name('busquedas.mensaje');
 	Route::post('busquedas_resultados/{busqueda}/concluir', 'BusquedasController@concluir')->name('busquedas.concluir');
+	Route::post('busquedas/{busqueda}/exportar', 'BusquedasController@busquedas_exportar')->name('busquedas.busquedas_exportar');
+
+	/* Rutas de mensajes*/
+	Route::get('mensajes', 'MensajesController@index')->name('mensajes.index')->middleware('permission:mensajes.index');
+	Route::get('recibidos', 'MensajesController@recibidos')->name('mensajes.recibidos');
+	Route::get('mensajes/{mensaje}/destroy', 'MensajesController@destroy')->name('mensajes.destroy')->middleware('permission:mensajes.destroy');
+	Route::get('mensajes/{mensaje}/destroy2', 'MensajesController@destroy2')->name('mensajes.destroy2')->middleware('permission:mensajes.destroy2');
+
+	/*Exportaciones*/
+
+	Route::get('exportaciones', 'ExportacionesController@index')->name('exportaciones.index')->middleware('permission:exportaciones.index');
+	Route::post('exportaciones/{perfiles}/exportar', 'ExportacionesController@exportar')->name('exportaciones.exportar');
+
+	/*Logs*/
+
+	Route::get('logs', 'LogsController@index')->name('logs.index')->middleware('permission:logs.index');
+
+
 
 });

@@ -9,15 +9,18 @@
 @section('content')
 	
 	<div class="card-block mt-3">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 		<div class="container">
-			<div class="card-title text-center">
-				<h3>Roles</h3>
+			<div class="card-title p-3 card-header">
+				<img src="{{asset('images/roles.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> ROLES</span>
+				<div class="float-right">
+					@can('roles.create')
+					<a href="{{route('roles.create')}}" class="btn btn-primary mt-3 ml-2 mb-2"><i class="fa fa-plus-circle"></i> Añadir nuevo rol</a>
+					@endcan
+				</div>	
 			</div>
 			<div class="flex-row">
-				@can('roles.create')
-				<a href="{{route('roles.create')}}" class="btn btn-primary float-left ml-2 mb-2"><i class="fa fa-plus-circle"></i> Añadir nuevo rol</a>
-				@endcan
+				
 			</div>
 			<table id="myTable" class="table">
 				<thead class="card-header bg-dark text-white">
@@ -34,7 +37,7 @@
 							<td>{{$rol->description}}</td>
 							<td class="float-right">
 								@can('roles.destroy')
-								<a href="{{ route('roles.destroy', $rol->id)}}"  onclick="return confirm('Desea eliminar el rol seleccionado?' )" class="btn btn-danger">
+								<a href="{{ route('roles.destroy', $rol->id)}}"  onclick="return confirm('Desea eliminar el rol seleccionado?, si realiza esta accion los usuarios con dicho rol deberan asignados a uno nuevo' )" class="btn btn-danger btn-sm">
 									<i class="fa fa-times"></i>
 								</a> 
 								@endcan
@@ -43,8 +46,8 @@
 					@endforeach
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  $('#myTable').DataTable({

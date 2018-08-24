@@ -11,11 +11,12 @@
 	function ventanaSecundaria(URL){
 	   var x = screen.width/4;
 	   var y = screen.height/3;
-	   window.open(URL,"ventana1","width=700,height=300,scrollbars=yes,,toolbar=no,location=no,directories=no,resizable=no,top="+y+",left="+x+"'") 
+	   window.open(URL,"ventana1","width=900,height=300,scrollbars=yes,,toolbar=no,location=no,directories=no,resizable=no,top="+y+",left="+x+"'") 
 	} 
 	</script>
 	<link rel="stylesheet" href="{{asset('css/choices.min.css?version=3.0.4')}}">
   	<script src="{{asset('js/choices.min.js?version=3.0.4s')}}"></script> 
+  	<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
 @endsection
 
 @section('content')	
@@ -40,7 +41,7 @@
 			  			<div class="col">
 			  				<label for="genotipo" class="mt-2">Seleccionar perfil objetivo</label>
 			  				<div id="genotipo" class="d-flex flex-wrap">
-	  							<input type="text" name="perfil" id='perfil' class="form-control w-75" required>
+	  							<input type="text" name="perfil" id='perfil' class="form-control w-75 perfil_objetivo" required>
 	  							<a href="javascript:ventanaSecundaria('{{route('busquedas.ventana')}}')" class="btn btn-primary w-25"><i class="fa fa-search"></i></a>	
 			  				</div>
 				  		</div>	
@@ -60,7 +61,7 @@
 						</div>
 						<div class="col">
 							<label for="id_tabla_de_frecuencias" class="mt-2">Tabla de Frecuencias a usar</label>
-							<select name="id_tabla_de_frecuencias" class="form-control" required="">
+							<select name="id_tabla_de_frecuencias" class="form-control tabla_de_frecuencias" required="">
 							  @foreach($tablas_de_frecuencias as $tabla_de_frecuencias)
 							  	@if($tabla_de_frecuencias->tabla_default == 1)
 							  		<option selected value="{{$tabla_de_frecuencias->id}}">{{$tabla_de_frecuencias->nombre_otorgado}}</option>
@@ -76,7 +77,7 @@
 			  				<div class="row">
 			  					<div class="col">
 			  						<label for="id_fuente" class="">Fuente</label>
-									<select name="id_fuente" class="form-control" required="">
+									<select name="id_fuente" class="form-control fuente" required="">
 									  <option disabled selected>Seleccione una Fuente</option>
 									  @foreach($fuentes as $fuente)
 									  	<option value="{{$fuente->id}}">{{$fuente->nombre}}</option>
@@ -85,7 +86,7 @@
 			  					</div>
 								<div class="col">
 									{{Form::label('motivo', 'Motivo de la busqueda')}}
-						      		{{Form::text('motivo', null , ['class' => 'form-control', 'required'])}}
+						      		{{Form::text('motivo', null , ['class' => 'form-control motivo1', 'required'])}}
 								</div>
 			  				</div>
 			  				<div class="row mt-3">
@@ -104,8 +105,9 @@
 							{{Form::select('descartar_perfiles_en_revision', ['0' => 'No', '1' => 'Si'], null, ['class'=> 'form-control'])}}
 			  			</div>
 			  		</div>
-			  		<div class="card-footer text-white text-right mt-3">
-			  			{!!Form::submit('Iniciar Busqueda', ['class' => 'btn btn-primary float-right'])!!}
+			  		<div class="card-footer text-white mt-3">
+			  			{!!Form::submit('Iniciar Busqueda', ['class' => 'btn btn-primary busqueda_individual'])!!}
+			  			<img src="{{asset('images/carga.gif')}}" width="120" height="120" id="carga">
 			  		</div>
 			  	</div>
 			  	{!! Form::close() !!}
@@ -143,9 +145,13 @@
 						</div>
 						<div class="col">
 							<label for="id_tabla_de_frecuencias" class="mt-2">Tabla de Frecuencias a usar</label>
-							<select name="id_tabla_de_frecuencias" class="form-control" required="">
+							<select name="id_tabla_de_frecuencias" class="form-control tabla_de_frecuencias2" required="">
 							  @foreach($tablas_de_frecuencias as $tabla_de_frecuencias)
-							  	<option value="{{$tabla_de_frecuencias->id}}">{{$tabla_de_frecuencias->nombre}}</option>
+							  	@if($tabla_de_frecuencias->tabla_default == 1)
+							  		<option selected value="{{$tabla_de_frecuencias->id}}">{{$tabla_de_frecuencias->nombre_otorgado}}</option>
+							  	@else
+							  		<option value="{{$tabla_de_frecuencias->id}}">{{$tabla_de_frecuencias->nombre_otorgado}}</option>
+							  	@endif
 							  @endforeach
 							</select>
 						</div>
@@ -155,7 +161,7 @@
 			  				<div class="row">
 			  					<div class="col">
 			  						<label for="id_fuente" class="">Fuente</label>
-									<select name="id_fuente" class="form-control" required="">
+									<select name="id_fuente" class="form-control fuente2" required="">
 									  <option disabled selected>Seleccione una Fuente</option>
 									  @foreach($fuentes as $fuente)
 									  	<option value="{{$fuente->id}}">{{$fuente->nombre}}</option>
@@ -164,7 +170,7 @@
 			  					</div>
 								<div class="col">
 									{{Form::label('motivo', 'Motivo de la busqueda')}}
-						      		{{Form::text('motivo', null , ['class' => 'form-control', 'required'])}}
+						      		{{Form::text('motivo', null , ['class' => 'form-control motivo2', 'required'])}}
 								</div>
 			  				</div>
 			  				<div class="row mt-3">
@@ -179,10 +185,13 @@
 						    {{Form::select('exclusiones', ['0' => '0', '1' => '1', '2' => '2'], null, ['class'=> 'form-control'])}}
 						    {{Form::label('marcadores_minimos', 'Numero de marcadores minimos', ['class' => 'mt-3'])}}
 						    {{Form::number('marcadores_minimos', 12 , ['class' => 'form-control', 'min' => '10'])}}
+						    {!!Form::label('descartar_perfiles_en_revision', 'Descartar perfiles geneticos en revision', ['class' => 'mt-3']) !!}
+							{{Form::select('descartar_perfiles_en_revision', ['0' => 'No', '1' => 'Si'], null, ['class'=> 'form-control'])}}
 			  			</div>
 			  		</div>
-			  		<div class="card-footer text-white text-right mt-3">
-			  			{!!Form::submit('Iniciar Busqueda', ['class' => 'btn btn-primary float-right'])!!}
+			  		<div class="card-footer text-white mt-3">
+			  			{!!Form::submit('Iniciar Busqueda', ['class' => 'btn btn-primary busqueda_grupal'])!!}
+			  			<img src="{{asset('images/carga.gif')}}" width="120" height="120" id="carga2">
 			  		</div>
 			  	</div>
 			  	{!! Form::close() !!}			  	
@@ -191,57 +200,57 @@
 		</div>
 	</div>
 <script>
-      var multipleDefault = new Choices(document.getElementById('etiquetas'));
+	  
+	  $(document).ready(function() {
 
-      var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-        placeholder: true,
-        placeholderValue: 'Pick an Strokes record',
-        maxItemCount: 5,
-      }).ajax(function(callback) {
-        fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-          .then(function(response) {
-            response.json().then(function(data) {
-              callback(data.releases, 'title', 'title');
-            });
-          })
-          .catch(function(error) {
-            console.error(error);
-          });
+	  		$('#carga').fadeOut();
+	  		$('#carga2').fadeOut();
+
+	  		$('.busqueda_individual').click(function(e){
+	  			var perfil_objetivo = $('.perfil_objetivo').val()
+	  			var etiquetas = $('#etiquetas').val()
+	  			var tabla_de_frecuencias = $('.tabla_de_frecuencias').val()
+	  			var fuente = $('.fuente').val()
+	  			var motivo1 = $('.motivo1').val()
+
+	  			if(perfil_objetivo != '' && etiquetas.length > 0  && tabla_de_frecuencias != null && fuente != null && motivo1 !=''){
+	  				$('.busqueda_individual').addClass('disabled');
+	  				$('.busqueda_grupal').addClass('disabled');
+					$('#carga').fadeIn();	  				
+	  			} 
+	  		});
+
+	  		$('.busqueda_grupal').click(function(e){
+	  			var etiquetas_objetivo = $('#etiquetasObjetivo').val()
+	  			var etiquetas_subordinadas = $('#etiquetasSubordinadas').val()
+	  			var tabla_de_frecuencias2 = $('.tabla_de_frecuencias2').val()
+	  			var fuente2 = $('.fuente2').val()
+	  			var motivo2 = $('.motivo2').val()
+
+	  			if(etiquetas_objetivo.length > 0 && etiquetas_subordinadas.length > 0  && tabla_de_frecuencias2 != null && fuente2 != null && motivo2 !=''){
+	  				$('.busqueda_individual').addClass('disabled');
+	  				$('.busqueda_grupal').addClass('disabled');
+					$('#carga2').fadeIn();	  				
+	  			} 
+	  		});
+	  });
+
+      var multipleDefault = new Choices(document.getElementById('etiquetas'), {
+	    searchResultLimit: 100,
+	    resetScrollPosition: false,
+	    position: 'button',
       });
 
-      var multipleDefault = new Choices(document.getElementById('etiquetasObjetivo'));
-
-      var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-        placeholder: true,
-        placeholderValue: 'Pick an Strokes record',
-        maxItemCount: 5,
-      }).ajax(function(callback) {
-        fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-          .then(function(response) {
-            response.json().then(function(data) {
-              callback(data.releases, 'title', 'title');
-            });
-          })
-          .catch(function(error) {
-            console.error(error);
-          });
-      });
-      var multipleDefault = new Choices(document.getElementById('etiquetasSubordinadas'));
-
-      var multipleFetch = new Choices('#choices-multiple-remote-fetch', {
-        placeholder: true,
-        placeholderValue: 'Pick an Strokes record',
-        maxItemCount: 5,
-      }).ajax(function(callback) {
-        fetch('https://api.discogs.com/artists/55980/releases?token=QBRmstCkwXEvCjTclCpumbtNwvVkEzGAdELXyRyW')
-          .then(function(response) {
-            response.json().then(function(data) {
-              callback(data.releases, 'title', 'title');
-            });
-          })
-          .catch(function(error) {
-            console.error(error);
-          });
+      var multipleDefault = new Choices(document.getElementById('etiquetasObjetivo'), {
+	    searchResultLimit: 100,
+	    resetScrollPosition: false,
+	    position: 'button',
+	  });
+      
+      var multipleDefault = new Choices(document.getElementById('etiquetasSubordinadas'), {
+	    searchResultLimit: 100,
+	    resetScrollPosition: false,
+	    position: 'button',
       });
   </script>
 	

@@ -7,8 +7,13 @@
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
 
 @section('content')
+	<?php 
+	    use Carbon\Carbon;
+		$usuario = App\User::find(Illuminate\Support\Facades\Auth::id());
+	?>
+
 	<div class="card-block">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 		<div class="container">
 			<div class="card-title p-3 card-header mb-3">
 				<img src="{{asset('images/importar.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> DETALLES DE IMPORTACION</span>
@@ -36,7 +41,7 @@
 							<td class="text-center">{{$importacion_perfiles->identificador}}</td>
 							<td class="text-center">{{$importacion_perfiles->fuente->nombre}}</td>
 							<td class="text-center">{{$importacion_perfiles->numero_de_perfiles}}</td>
-							<td>{{$importacion_perfiles->created_at}}</td>
+							<td>{{Carbon::parse($importacion_perfiles->created_at)->format('d/m/Y')}}</td>
 							<td>{{$importacion_perfiles->tipo_de_muestra}}</td>
 							<td class="text-center">{{$importacion_perfiles->observaciones}}</td>
 						</tr>
@@ -54,6 +59,7 @@
 	
 			<table id="myTable" class="table">
 				<thead class="card-header bg-danger text-white">
+					<td hidden>Id</td>
 					<td>ID interno</td>
 					<td>ID externo</td>
 					<td class="text-center">Marcadores importados</td>
@@ -66,25 +72,40 @@
 
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  $(function() {
 					  var data = <?php echo $perfiles_geneticos;?>;
+					  var usuario = <?php echo $usuario;?>;
 					  console.log(data);
 					  var oTable = $('#myTable').DataTable({
-				            data:data,
-					        columnDefs: [{"className": "dt-center", "targets": "_all"}],
+					  		"order": [ 0 , 'desc'],
+					  		"language": {
+						      "url": "http://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+						    },
+				            data:data,				            
+					        columnDefs: [{"className": "dt-center", "targets": "_all"}, {
+				                "targets": [ 0 ],
+				                "visible": false,
+				                "searchable": false,
+				            },],
 				            columns: [
+				            	{ data: 'id'},				  
 						        { data: 'identificador',
 							    	render: function ( data, type, row ) {
 							    		if(row.es_perfil_repetido == 0 || row.desestimado == 1){
-							    			return '<a  href="../perfiles_geneticos/'+ row.id +'">'+ data + '</a>';
+							    			return '<a  href="../importaciones_perfiles/'+ row.id +'/perfil_genetico">'+ data + '</a>';
 							    		}
 							    		else{
 							    			if(row.es_perfil_repetido == 1 && row.desestimado == 0){
-							    				return '<a  href="../perfiles/'+ row.id +'/validar_duplicado">'+ data + '</a>';
+							    				if(row.perfil_original.id_estado == usuario.id_estado){
+							    					return '<a  href="../importaciones_perfiles/'+ row.id +'/validar_duplicado">'+ data + '</a>';
+							    				}
+							    				else{
+							    					return data;
+							    				}							    				
 							    			}
 							    		}
 								    }
@@ -117,11 +138,22 @@
 								        }
 								    }
 						    	},
-						        { data: 'created_at'},
+						        { data: 'created_at', 
+						        	render: function (data, type, row){
+						        		var date = new Date(data);
+						        		return date.toLocaleDateString()
+						        	}
+						    	},
 						    ]
 				        });
+
+					  // oTable.column( '0:visible' )
+						 //    .order( 'desc' )
+						 //    .draw();
 					});
 				});
+
+
 			</script>
 		</div>
 	</div>

@@ -18,6 +18,7 @@ class CreateBusquedasResultadosTable extends Migration
             $table->integer('id_busqueda')->unsigned()->nullable();
             $table->integer('id_perfil_objetivo')->unsigned()->nullable();
             $table->integer('id_perfil_subordinado')->unsigned()->nullable();
+            $table->string('amel')->nullable();
             $table->double('IP', 18, 6);
             $table->double('PP', 11, 8);
             $table->integer('marcadores_minimos');

@@ -9,7 +9,7 @@
 @section('content')
 
 	<div class="card-block">
-		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
 		<div class="container">
 			<div class="card-title p-3 card-header">
 				<img src="{{asset('images/genotipos.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> LISTA DE PERFILES PARA REVISION</span>
@@ -17,6 +17,7 @@
 	
 			<table id="myTable" class="table">
 				<thead class="card-header bg-danger text-white">
+					<td hidden>Id</td>
 					<td>ID interno</td>
 					<td>ID externo</td>
 					<td class="text-center">Marcadores importados</td>
@@ -29,15 +30,25 @@
 					
 				</tbody>
 			</table>
-			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-			<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+			<script src="{{asset('js/jquery-3.3.1.js')}}"></script>
+			<script src="{{asset('js/datatables/dataTables.min.js')}}"></script>
 			<script>
 				$(document).ready(function() {
 				  var data = <?php echo $perfiles_geneticos;?>;
 				  var oTable = $('#myTable').DataTable({
+				  		"order": [ 0 , 'desc'],
+				  		"language": {
+						  "url": "http://cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+						},
 			            data:data,
-				        columnDefs: [{"className": "dt-center", "targets": "_all"}],
+				        columnDefs: [{"className": "dt-center", "targets": "_all"}, {
+			                "targets": [ 0 ],
+			                "visible": false,
+			                "searchable": false,
+			            },],
 			            columns: [
+			            	{ data: 'id'},		
 					        { data: 'identificador',
 						    render: function ( data, type, row ) {
 							        return '<a href="../perfiles_geneticos/'+ row.id +'">'+ data + '</a>';
@@ -60,7 +71,12 @@
 							        return '<span class="btn btn-danger btn-sm rounded p-1 disabled">'+ data + '</span>';
 							    }
 							},
-					        { data: 'created_at'},
+					        { data: 'created_at', 
+					        	render: function (data, type, row){
+					        		var date = new Date(data);
+					        		return date.toLocaleDateString()
+					        	}
+					    	},
 					    ]
 			        });
 				});

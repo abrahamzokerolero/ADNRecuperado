@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Laracast\Flash\Flash;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +47,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // if ($request->wantsJson()) {
+        //     return response([
+        //         'success' => false,
+        //         'message' => $e->getMessage()
+        //     ], 404);
+        // }
+
+        // if ($e instanceof AuthorizationException) {
+        //     return view('welcome');
+        // }
+        
         return parent::render($request, $exception);
     }
 }
