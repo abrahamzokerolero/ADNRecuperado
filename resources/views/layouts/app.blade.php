@@ -119,24 +119,15 @@
                     @endcan
                   </div>
                   @if($usuario->estado->nombre == 'CNB')
-                  <div class="card">
-                    <div class="card-header text-white" id="headingSeven">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseOne">
-                          <i class="fa fa-search"></i> Mensajes Enviados
-                        </button>
-                      </h5>
+                    <div class="card">
+                      @can('busquedas.index')
+                        <div class="card-header  id="headingOne">
+                          <h5 class="mb-0">
+                            <a href="{{route('mensajes.index')}}" class="btn btn-link text-white"><i class="fa fa-home"></i> Mensajes enviados</a>
+                          </h5>
+                        </div>
+                      @endcan
                     </div>
-                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
-                        <ul class="nav flex-column m-0">
-                            @can('busquedas.index')
-                            <li class="nav-item">
-                              <a class="nav-link pl-5" href="{{route('mensajes.index')}}">Mensajes</a>
-                            </li>
-                            @endcan
-                        </ul>           
-                    </div>
-                  </div>
                   @endif
                   <div class="card">
                     <div class="card-header text-white" id="headingTwo">
@@ -177,7 +168,8 @@
                                 @if($usuario->estado->nombre == 'CNB')
                                   {{App\PerfilGenetico::where('es_perfil_repetido','=',1)->where('desestimado','=',0)->count()}} )
                                 @else
-                                  {{App\PerfilGenetico::where('id_estado', '=', $usuario->id_estado)->where('es_perfil_repetido','=',1)->where('id_estado_perfil_original','=',$usuario->id_estado)->where('desestimado', '=', 0)->count()}} )
+                                  {{-- {{App\PerfilGenetico::where('id_estado', '=', $usuario->id_estado)->where('es_perfil_repetido','=',1)->where('id_estado_perfil_original','=',$usuario->id_estado)->where('desestimado', '=', 0)->count()}} ) --}}
+                                  {{App\PerfilGenetico::where('id_estado', '=', $usuario->id_estado)->where('es_perfil_repetido','=',1)->where('desestimado', '=', 0)->count()}} )
                                 @endif
                                 </b></a>
                             </li>
@@ -259,23 +251,14 @@
                     </div>
                   </div>
                   <div class="card">
-                    <div class="card-header text-white" id="headingFive">
-                      <h5 class="mb-0">
-                        <button class="btn btn-link collapsed text-white" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                          <i class="fa fa-arrow-circle-o-down"></i> Exportaciones
-                        </button>
-                      </h5>
-                    </div>
-                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-                        <ul class="nav flex-column m-0">
-                          @can('exportaciones.index')  
-                            <li class="nav-item">
-                              <a class="nav-link pl-5" href="{{route('exportaciones.index')}}">Exportar genotipos</a>
-                            </li>
-                          @endcan
-                        </ul>
-                    </div>
-                  </div>
+                    @can('exportaciones.index')
+                      <div class="card-header id="headingOne">
+                        <h5 class="mb-0">
+                          <a href="{{route('exportaciones.index')}}" class="btn btn-link text-white"><i class="fa fa-home"></i> Exportar genotipos</a>
+                        </h5>
+                      </div>
+                    @endcan
+                  </div>                  
                   @if($usuario->estado->nombre == 'CNB')
                   <div class="card">
                     <div class="card-header text-white" id="headingSix">

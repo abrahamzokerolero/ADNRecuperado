@@ -56,7 +56,11 @@
 					</div>	
 				</div>
 			</div>
-	
+			@if($usuario->estado->nombre <> 'CNB')
+				@if($perfiles_geneticos->where('es_perfil_repetido', '=', 1)->where('desestimado', '=', 0)->where('id_estado_perfil_original', '<>', $usuario->estado->id)->count() > 0 )
+					<div class="card-header bg-success text-center text-white mt-2"> Se encontraron perfiles geneticos duplicados que pertenecen a otros estados, CNB se encargara de validarlos, favor de no volver a cargar la importacion.</div>
+				@endif
+			@endif
 			<table id="myTable" class="table">
 				<thead class="card-header bg-danger text-white">
 					<td hidden>Id</td>
@@ -79,7 +83,6 @@
 				  $(function() {
 					  var data = <?php echo $perfiles_geneticos;?>;
 					  var usuario = <?php echo $usuario;?>;
-					  console.log(data);
 					  var oTable = $('#myTable').DataTable({
 					  		"order": [ 0 , 'desc'],
 					  		"language": {

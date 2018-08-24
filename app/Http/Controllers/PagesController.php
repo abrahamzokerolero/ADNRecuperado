@@ -29,7 +29,7 @@ class PagesController extends Controller
 		    	$numero_etiquetas = Etiqueta::where('desestimado', '=', 0)->count();
 		    	$numero_usuarios = User::get()->count();
 		    	$numero_importaciones = ImportacionPerfil::where('desestimado', '=', 0)->count();
-		    	$numero_perfiles = PerfilGenetico::where('desestimado', '=', 0)->count();
+		    	$numero_perfiles = PerfilGenetico::where('desestimado', '=', 0)->where('es_perfil_repetido', 0)->count();
 		    	$numero_categorias = Categoria::where('desestimado', '=', 0)->count();
 	    	}
 	    	else{
@@ -37,7 +37,7 @@ class PagesController extends Controller
 		    	$numero_etiquetas = Etiqueta::where('desestimado', '=', 0)->count();
 		    	$numero_usuarios = User::where('id_estado', '=', $usuario->id_estado)->get()->count();
 		    	$numero_importaciones = ImportacionPerfil::where('id_estado', '=', $usuario->id_estado)->where('desestimado', '=', 0)->count();
-		    	$numero_perfiles = PerfilGenetico::where('id_estado', '=', $usuario->id_estado)->where('desestimado', '=', 0)->count();
+		    	$numero_perfiles = PerfilGenetico::where('id_estado', '=', $usuario->id_estado)->where('desestimado', '=', 0)->where('es_perfil_repetido', 0)->count();
 		    	$numero_categorias = Categoria::where('desestimado', '=', 0)->count();	
 	    	}
 	    	return view('welcome',[

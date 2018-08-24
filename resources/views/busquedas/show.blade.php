@@ -13,6 +13,14 @@
 			var form = $('#form_mensaje');
 			var cadena = form.attr('action').split('/')
 			$("#form_mensaje").attr('action', form.attr('action').replace(cadena[4], id, "gi"));
+
+			var id_perfil_subordinado_seleccionado = form.attr('action').split('/');
+			var resultados = <?php echo $busqueda->resultados;?>;
+			for (resultado in resultados){
+				if(id_perfil_subordinado_seleccionado[4] == resultados[resultado].id ){
+					$('#exampleModal2Label').text('Enviar mensaje al estado de ' + resultados[resultado].perfil_subordinado.estado.nombre);
+				}
+			}
 		}
 	</script>
 	<div class="card-block mt-3">
@@ -24,8 +32,14 @@
 					@can('busquedas.create')
 					<a href="{{route('busquedas.create')}}" class="btn btn-info float-right mr-3 mb-2"><i class="fa fa-plus-circle"></i> Nueva busqueda</a>
 					@endcan
+					<div class="float-right mr-3">
+						{!! Form::open(array('route' => ['busquedas.busquedas_exportar', $busqueda->id], 'method' => 'POST', 'id' => 'exportar_form')) !!}﻿
+					        <input type="submit" id="button2" class="btn btn-info" value="Exportar"/>			
+					    {!!Form::close()!!}
+					</div>
 				</div>
 			</div>
+
 			@if($busqueda->resultados->count() <> 0)
 			<!-- Modal para metadatos de ambos perfiles-->
 			<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -174,20 +188,21 @@
 			  	{!! Form::open(array('route' => ['busquedas.mensaje', 'id_resultado'], 'method' => 'POST', 'id' => 'form_mensaje')) !!}﻿
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="exampleModal2Label">Enviar Mensaje</h5>
+			        <h5 class="modal-title" id="exampleModal2Label">Enviar mensaje</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
 			      <div class="modal-body">
 			          <div class="form-group">
+			          	<div class="card-header bg-info text-white text-center">Numero maximo de caracteres: 120</div>
 			            <label for="conclusiones" class="col-form-label">Contenido del mensaje</label>
-			            <textarea class="form-control" name="mensaje" required></textarea>
+			            <textarea class="form-control" name="mensaje" required maxlength="120"></textarea>
 			          </div>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-			        <input type="submit" class="btn btn-primary " value="Guardar cambios">
+			        <input type="submit" class="btn btn-primary " value="Enviar mensaje">
 			      </div>
 			    {!!Form::close()!!} 
 			    </div>
@@ -199,7 +214,7 @@
 					<div class="col">
 						<div class="card">
 							<div class='card-header bg-info text-white'><b>DETALLES DE LA BUSQUEDA</b></div>
-							<div class="container">
+							<div class="container">								
 								<p class="m-0"><b>Fuente solicitante:</b> <span class="">{{$busqueda->fuente->nombre}}</span></p>
 								<p class="m-0"><b>Usuario:</b> <span class="">{{strtoupper($busqueda->usuario->name)}}</span></p>
 								<p class="m-0"><b>Fecha:</b> <span class="">{{Carbon::parse($busqueda->created_at)->format('d/m/Y')}}</span></p>
@@ -264,8 +279,9 @@
 				</div>
 			</div>
 			<hr class="mb-5 mt-5">
-
+			
 			<div class="mt-5">
+
 				<div class="card-header bg-info text-white"><b>DETALLE DE RESULTADOS DE LA BUSQUEDA</b></div>
 				<div class="row mt-3">
 					<div class="col">
@@ -274,6 +290,7 @@
 								<td class="d-none">Indice</td>
 								<td class="text-center">Genotipo objetivo</td>
 								<td class="text-center">Genotipo compatible</td>
+								<td class="text-center">Estado P. compatible</td>
 								<td class="text-center">Amel</td>
 								<td class="text-center">IP</td>
 								<td class="text-center">PP</td>
@@ -299,6 +316,7 @@
 												{{$resultado->perfil_subordinado->identificador}}
 											</button>
 										</td>
+										<td class="text-center">{{$resultado->perfil_subordinado->estado->nombre}}</td>
 										<td class="text-center">{{$resultado->amel}}</td>
 										@if($resultado->IP == 0)
 											<td class="text-center"><b>0</b></td>
@@ -336,8 +354,6 @@
 	</div>
 	<script>
 		$(document).ready(function() {
-
-			if($)
 
 			$(".boton_metadatos").click(function(e){
 				$('input').removeClass('bg-danger text-white');

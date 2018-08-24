@@ -1056,7 +1056,7 @@ class PerfilesGeneticosController extends Controller
             $perfiles_geneticos = PerfilGenetico::with(array('usuario' => function($query)
             {$query->select('users.id', 'users.name');}))
             ->with(array('estado' => function($query){$query->select('estados.id', 'estados.nombre');}))
-            ->with(array('perfil_original' => function($query){$query->select('perfiles_geneticos.id', 'perfiles_geneticos.identificador');}))
+            ->with('perfil_original')
             ->with(array('estado_perfil_original' => function($query){$query->select('estados.id', 'estados.nombre');}))
             ->where('es_perfil_repetido','=',1)
             ->where('desestimado', '=', 0)
@@ -1067,10 +1067,10 @@ class PerfilesGeneticosController extends Controller
             $perfiles_geneticos = PerfilGenetico::with(array('usuario' => function($query)
             {$query->select('users.id', 'users.name');}))
             ->with(array('estado' => function($query){$query->select('estados.id', 'estados.nombre');}))
-            ->with(array('perfil_original' => function($query){$query->select('perfiles_geneticos.id', 'perfiles_geneticos.identificador');}))
+            ->with('perfil_original')
             ->with(array('estado_perfil_original' => function($query){$query->select('estados.id', 'estados.nombre');}))
             ->where('id_estado', '=', $usuario->id_estado)
-            ->where('id_estado_perfil_original','=',$usuario->id_estado)
+            // ->where('id_estado_perfil_original','=',$usuario->id_estado)
             ->where('es_perfil_repetido','=',1)
             ->where('desestimado', '=', 0)
             ->get();   
@@ -1363,13 +1363,25 @@ class PerfilesGeneticosController extends Controller
             'actividad' => 'Se realizo un etiquetado de perfiles geneticos con las etiquetas: ' . $etiquetas_nombres,
         ]);
 
-        $categorias = Categoria::with(array('etiquetas' => function($query){
-          $query->with(array('perfiles_geneticos_asociados' => function($query){ 
-            $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
-            ->where('perfiles_geneticos.desestimado', 0)
-            ->where('perfiles_geneticos.es_perfil_repetido', 0);
-          }))->where('desestimado', 0);
-        }))->where('desestimado', '=', 0)->get();
+        if($usuario->estado->nombre == "CNB"){
+              $categorias = Categoria::with(array('etiquetas' => function($query){
+                $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+                  $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                  ->where('perfiles_geneticos.desestimado', 0)
+                  ->where('perfiles_geneticos.es_perfil_repetido', 0);
+                }))->where('desestimado', 0);
+              }))->where('desestimado', '=', 0)->get();            
+          }
+          else{
+              $categorias = Categoria::with(array('etiquetas' => function($query) use( &$usuario ){
+                $query->with(array('perfiles_geneticos_asociados' => function($query) use( &$usuario ){ 
+                  $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                  ->where('perfiles_geneticos.desestimado', 0)
+                  ->where('perfiles_geneticos.es_perfil_repetido', 0)
+                  ->where('perfiles_geneticos.id_estado', '=', $usuario->estado->id);
+                }))->where('desestimado', 0);
+              }))->where('desestimado', '=', 0)->get();
+          }
 
         return response()->json([
           'newData' => $contador,
@@ -1415,13 +1427,25 @@ class PerfilesGeneticosController extends Controller
             'actividad' => 'Se eliminaron las etiquetas para los perfiles geneticos seleccionados',
         ]);
 
-        $categorias = Categoria::with(array('etiquetas' => function($query){
-          $query->with(array('perfiles_geneticos_asociados' => function($query){ 
-            $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
-            ->where('perfiles_geneticos.desestimado', 0)
-            ->where('perfiles_geneticos.es_perfil_repetido', 0);
-          }))->where('desestimado', 0);
-        }))->where('desestimado', '=', 0)->get();
+        if($usuario->estado->nombre == "CNB"){
+            $categorias = Categoria::with(array('etiquetas' => function($query){
+              $query->with(array('perfiles_geneticos_asociados' => function($query){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();            
+        }
+        else{
+            $categorias = Categoria::with(array('etiquetas' => function($query) use( &$usuario ){
+              $query->with(array('perfiles_geneticos_asociados' => function($query) use( &$usuario ){ 
+                $query->join('perfiles_geneticos', 'etiquetas_asignadas.id_perfil_genetico', '=', 'perfiles_geneticos.id')
+                ->where('perfiles_geneticos.desestimado', 0)
+                ->where('perfiles_geneticos.es_perfil_repetido', 0)
+                ->where('perfiles_geneticos.id_estado', '=', $usuario->estado->id);
+              }))->where('desestimado', 0);
+            }))->where('desestimado', '=', 0)->get();
+        }
 
         return response()->json([
           'contador' => $contador,

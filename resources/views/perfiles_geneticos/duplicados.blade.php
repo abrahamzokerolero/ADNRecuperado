@@ -7,6 +7,10 @@
 <!-- <script En las vistas de tablas no se inluye el script de laravel ya que causa conflicto con el datatable -->
 
 @section('content')
+	
+	<?php 
+		$usuario = App\User::find(Illuminate\Support\Facades\Auth::id());
+	?>
 
 	<div class="card-block">
 		<link rel="stylesheet" href="{{asset('css/datatables/dataTables.min.css')}}">
@@ -14,7 +18,13 @@
 			<div class="card-title p-3 card-header">
 				<img src="{{asset('images/genotipos.png')}}" alt="" width="80" height="70" class=""><span class="h4 ml-3 font-weight-bold"> LISTA DE PERFILES DUPLICADOS</span>
 			</div>
-	
+			
+			@if($usuario->estado->nombre <> 'CNB')
+				@if($perfiles_geneticos->where('es_perfil_repetido', '=', 1)->where('desestimado', '=', 0)->where('id_estado_perfil_original', '<>', $usuario->estado->id)->count() > 0 )
+					<div class="card-header bg-success text-center text-white mt-2"> Se encontraron perfiles geneticos duplicados que pertenecen a otros estados, CNB se encargara de validarlos, favor de no volver a cargar la importacion.</div>
+				@endif
+			@endif
+
 			<table id="myTable" class="table">
 				<thead class="card-header bg-danger text-white">
 					<td hidden>Id</td>
@@ -36,7 +46,7 @@
 				$(document).ready(function() {
 				  $(function() {
 					  var data = <?php echo $perfiles_geneticos;?>;
-					  console.log(data);
+					  var usuario = <?php echo $usuario?>;
 					  var oTable = $('#myTable').DataTable({
 					  		"order": [ 0 , 'desc'],
 					  		"language": {
@@ -52,7 +62,13 @@
 				            	{ data: 'id'},
 						        { data: 'identificador',
 							    	render: function ( data, type, row ) {
-								        return '<a class="border border-danger rounded p-1" href="../perfiles/'+ row.id +'/validar_duplicado">'+ data + '</a>';
+							    		
+								        if(row.perfil_original.id_estado == usuario.id_estado){
+					    					return '<a  href="../perfiles/'+ row.id +'/validar_duplicado">'+ data + '</a>';
+					    				}
+					    				else{
+					    					return data;
+					    				}	
 								    }
 							    },
 							    { data: 'id_externo'},

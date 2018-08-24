@@ -242,11 +242,11 @@ class BusquedasController extends Controller
         // Con las subconsultas se comparan solo aquellos marcadores en comun entre el perfil objetivo y los etiquetados
 
         foreach ($perfiles_geneticos as $perfil_genetico){
-            obtenerIP($perfil_objetivo, $perfil_genetico, $request , $busqueda, $frecuencias);
+            obtenerIP($perfil_objetivo, $perfil_genetico, $request , $busqueda, $request->id_tabla_de_frecuencias);
         }
 
         
-        return redirect()->route('busquedas.index');
+        return redirect()->route('busquedas.show', $busqueda->id);
     }
 
 
@@ -400,15 +400,14 @@ class BusquedasController extends Controller
             'etiquetas_usadas' => "". implode(',', $request->etiquetasSubordinadas)
         ]);
 
-        $frecuencias = Frecuencia::where('id_importacion', $request->id_tabla_de_frecuencias)->get();
-
         // Con las subconsultas se comparan solo aquellos marcadores en comun entre los perfil objetivos y los subordinados
+
 
 
         foreach ($perfiles_objetivo as $perfil_objetivo) {
             foreach ($perfiles_subordinados as $perfil_subordinado){
                 if($perfil_objetivo->id <> $perfil_subordinado->id){
-                    obtenerIP($perfil_objetivo, $perfil_subordinado, $request , $busqueda, $frecuencias);
+                    obtenerIP($perfil_objetivo, $perfil_subordinado, $request , $busqueda, $request->id_tabla_de_frecuencias);
                 }
             } 
         }
@@ -419,7 +418,7 @@ class BusquedasController extends Controller
             'actividad' => 'Realizo una busqueda grupal: ' . $busqueda->identificador,
         ]);
 
-        return redirect()->route('busquedas.index');
+        return redirect()->route('busquedas.show', $busqueda->id);
     }
 
     /**
@@ -447,7 +446,7 @@ class BusquedasController extends Controller
                     $query->with('tipo_de_metadato');
                 }))->with(array('etiquetas' => function($query){
                     $query->with('etiqueta');
-                }));
+                }))->with('estado');
               }));            
             }))->find($id); 
 
@@ -515,6 +514,8 @@ class BusquedasController extends Controller
     public function ventana(){
         $usuario = User::find(Auth::id());
 
+
+
         if($usuario->estado->nombre == "CNB"){
             $perfiles_geneticos = PerfilGenetico::with(array('fuente' => function($query){
               $query->select('id','nombre');}))
@@ -536,7 +537,7 @@ class BusquedasController extends Controller
     }
 
     public function mensaje(Request $request, $id){
-        
+
         $resultado = BusquedaResultado::find($id);
         $usuario = User::find(Auth::id());
         // dd($resultado->perfil_subordinado->estado->id);
@@ -547,7 +548,7 @@ class BusquedasController extends Controller
             'id_usuario_envia' => $usuario->id,
             'id_estado_recibe' => $resultado->perfil_subordinado->estado->id,
             'id_busqueda_resultado' => $resultado->id_busqueda,
-            'mensaje' => $request->mensaje,
+            'mensaje' => $request->mensaje . " // Contactar via correo electronico //",
             'revisado' => 0
         ]);
 
@@ -557,7 +558,11 @@ class BusquedasController extends Controller
 
     public function busquedas_exportar(Request $request, $busqueda){
 
-        \Excel::create('Exportacion_de_resultados', function($excel) use (&$busqueda){
+        $busqueda_identificador = Busqueda::find($busqueda);
+
+
+
+        \Excel::create('Exportacion_de_resultados_' . $busqueda_identificador->identificador, function($excel) use (&$busqueda){
             
             $excel->getDefaultStyle()
             ->getAlignment()
@@ -615,7 +620,7 @@ class BusquedasController extends Controller
                     }
                     
                     $sheet->row(2, ['Motivo de busqueda', $busqueda->motivo]);
-                    $sheet->row(3, ['Identificador y tipo de Busqueda', $busqueda->identificador . ': ' . $busqueda->tipo_de_busqueda->nombre]);
+                    $sheet->row(3, ['Id de busqueda y tipo de Busqueda', $busqueda->identificador . ' : ' . $busqueda->tipo_de_busqueda->nombre]);
                     $sheet->row(4, ['Marcadores minimos', $busqueda->marcadores_minimos]);
                     $sheet->row(5, ['Exclusiones maximas', $busqueda->numero_de_exclusiones]);
                     $sheet->row(6, ['Tabla de frecuencias', $busqueda->tabla_de_frecuencias->nombre_otorgado]);
@@ -721,7 +726,14 @@ class BusquedasController extends Controller
                             array_push($arreglo_de_datos_del_perfil_objetivo, $resultado->perfil_objetivo->identificador);
                             array_push($arreglo_de_datos_del_perfil_objetivo, $resultado->perfil_objetivo->id_externo);
                             $nombre_del_donante = $resultado->perfil_objetivo->metadatos->firstWhere('id_tipo_de_metadato', 5);
-                            array_push($arreglo_de_datos_del_perfil_objetivo, $nombre_del_donante );
+                            if(!empty($nombre_del_donante)){
+                                array_push($arreglo_de_datos_del_perfil_objetivo, $nombre_del_donante->dato );
+                            }
+                            else{
+                                array_push($arreglo_de_datos_del_perfil_objetivo, 'SIN DATO');   
+                            }
+                            
+
                             $nombre_del_desaparecido = $resultado->perfil_objetivo->metadatos->firstWhere('id_tipo_de_metadato', 7);
                             if(!empty($nombre_del_desaparecido)){
                                 array_push($arreglo_de_datos_del_perfil_objetivo, $nombre_del_desaparecido->dato);
@@ -770,8 +782,6 @@ class BusquedasController extends Controller
                         
                         array_push($arreglo_de_datos_del_perfil_subordinado, $resultado->perfil_subordinado->identificador);
                         array_push($arreglo_de_datos_del_perfil_subordinado, $resultado->perfil_subordinado->id_externo);
-                        $nombre_del_donante = $resultado->perfil_objetivo->metadatos->firstWhere('id_tipo_de_metadato', 5);
-                        array_push($arreglo_de_datos_del_perfil_objetivo, $nombre_del_donante );
                         $nombre_del_donante = $resultado->perfil_subordinado->metadatos->firstWhere('id_tipo_de_metadato', 5);
                         if(!empty($nombre_del_donante)){
                             array_push($arreglo_de_datos_del_perfil_subordinado, $nombre_del_donante->dato);
@@ -779,13 +789,24 @@ class BusquedasController extends Controller
                         else{
                             array_push($arreglo_de_datos_del_perfil_subordinado, 'SIN DATO');   
                         }                        
+
+                        $nombre_del_desaparecido = $resultado->perfil_subordinado->metadatos->firstWhere('id_tipo_de_metadato', 7);
+                        if(!empty($nombre_del_desaparecido)){
+                            array_push($arreglo_de_datos_del_perfil_subordinado, $nombre_del_desaparecido->dato);
+                        }
+                        else{
+                            array_push($arreglo_de_datos_del_perfil_subordinado, 'SIN DATO');   
+                        }  
+
                         $parentesco = $resultado->perfil_subordinado->metadatos->firstWhere('id_tipo_de_metadato', 9);
+
                         if(!empty($parentesco)){
-                            array_push($arreglo_de_datos_del_perfil_subordinado, $parentesco->dato);    
+                            array_push($arreglo_de_datos_del_perfil_subordinado, $parentesco->dato);  
                         }
                         else{
                             array_push($arreglo_de_datos_del_perfil_subordinado, 'SIN DATO');   
                         }
+
                         array_push($arreglo_de_datos_del_perfil_subordinado, $resultado->perfil_subordinado->fuente->nombre);
                         array_push($arreglo_de_datos_del_perfil_subordinado, $resultado->perfil_subordinado->estado->nombre);
                         if(!$resultado->IP == 0){
@@ -794,6 +815,8 @@ class BusquedasController extends Controller
                         else{
                             array_push($arreglo_de_datos_del_perfil_subordinado, $resultado->exclusiones);   
                         }
+
+
 
                         $arreglo_de_exclusiones = [];
 
@@ -875,11 +898,13 @@ class BusquedasController extends Controller
 
 
 
-function ObtenerIP ( $p_objetivo, $p_subordinado, $request_busqueda , $busqueda, $frecuencias ){
+function ObtenerIP ( $p_objetivo, $p_subordinado, $request_busqueda , $busqueda, $id_tabla_de_frecuencias ){
     $IP = 1;
     $exclusiones = 0;
     $marcadores_usados = 0;
     $request = $request_busqueda;
+
+    $frecuencias = Frecuencia::where('id_importacion', $id_tabla_de_frecuencias)->get();
 
     foreach($p_objetivo->alelos as $m_p1) {
         $m_p2 = $p_subordinado->alelos->firstWhere('id_marcador', $m_p1->id_marcador);
@@ -1005,7 +1030,7 @@ function ObtenerIP ( $p_objetivo, $p_subordinado, $request_busqueda , $busqueda,
         // echo "IP " . $IP .'<br>';
 
         $amel = Alelo::where('id_perfil_genetico', $p_subordinado->id)
-        ->where('id_marcador', 1)
+        ->where('id_marcador', 14)
         ->first();
 
         if(!empty($amel)){
